@@ -1,0 +1,45 @@
+"""import tkinter as tk
+from tkinter import ttk"""
+from tkinter import *
+
+"""
+creating a new window
+"""
+
+"""
+board = tk.Tk()
+board.title('AccessWord')  # window name
+# board.iconbitmap("ke.svg")  # icon
+
+# window size
+board.geometry('1010x250')             # normal size
+board.maxsize(width=1010, height=250)  # maximum size
+board.minsize(width=1010, height=250)  # minimum size
+
+# text box
+equation = tk.StringVar()
+Dis_entry = ttk.Entry(board, state='readonly', textvariable=equation)
+Dis_entry.grid(rowspan=1, columnspan=100, ipadx=999, ipady=20)
+
+board.mainloop()
+"""
+
+
+def open_window():
+    top = Toplevel()
+    top.title("top window")
+    top.geometry("300x300+120+120")
+    button1 = Button(top, text="close", command=top.destroy)
+    button1.pack()
+
+
+root = Tk()
+button1 = Button(root, text="Admin", command=open_window)
+button1.pack()
+button1 = Button(root, text="Hearing impaired", command=open_window)
+button1.pack()
+button1 = Button(root, text="visually impaired", command=open_window)
+button1.pack()
+
+root.geometry("300x300+120+120")
+root.mainloop()
