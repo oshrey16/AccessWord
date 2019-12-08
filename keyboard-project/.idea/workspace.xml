@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="" />
+    <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accessWord" beforeDir="false" afterPath="$PROJECT_DIR$/accessWord" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +106,7 @@
       <option name="presentableId" value="Default" />
       <updated>1575642447902</updated>
       <workItem from="1575811440044" duration="116000" />
-      <workItem from="1575811571727" duration="3551000" />
+      <workItem from="1575811571727" duration="5756000" />
     </task>
     <servers />
   </component>
@@ -137,6 +140,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/keyboard_project$accessWord.coverage" NAME="accessWord Coverage Results" MODIFIED="1575814150313" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/keyboard_project$accessWord.coverage" NAME="accessWord Coverage Results" MODIFIED="1575817352784" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
