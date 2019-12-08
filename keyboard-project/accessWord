@@ -30,6 +30,8 @@ def visual_board():
 """ מסך ראשי"""
 root = tk.Tk()
 root.title("AccessWord")
+l = Label(root, text = "שלום")
+l.place(anchor = NW)
 button1 = Button(root, text="Admin", command=admin_board)
 button1.pack()
 button2 = Button(root, text="Hearing impaired", command=hearing_board)
