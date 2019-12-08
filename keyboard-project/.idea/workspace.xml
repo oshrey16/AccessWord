@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/keyboard-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/keyboard-project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accessWord" beforeDir="false" afterPath="$PROJECT_DIR$/accessWord" afterDir="false" />
-    </list>
+    <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +103,7 @@
       <option name="presentableId" value="Default" />
       <updated>1575642447902</updated>
       <workItem from="1575811440044" duration="116000" />
-      <workItem from="1575811571727" duration="3231000" />
+      <workItem from="1575811571727" duration="3551000" />
     </task>
     <servers />
   </component>
