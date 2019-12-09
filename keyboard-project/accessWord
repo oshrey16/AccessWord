@@ -1,43 +1,85 @@
+from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-from tkinter import *
+import tk
 
 
-def admin_board():
-    top = Toplevel()
-    top.title("AccessWord")
-    top.geometry("300x300+120+120")
-    button = Button(top, text="close", command=top.destroy)
-    button.pack()
+def select(value):
+    if value == "BACK":
+        entry.delete(len(entry.get()) - 1, END)
+
+    elif value == "SPACE":
+        entry.insert(END, ' ')
+    elif value == " Tab ":
+        entry.insert(END, '    ')
+    else:
+        entry.insert(END, value)
 
 
-def hearing_board():
-    top = Toplevel()
-    top.title("AccessWord")
-    top.geometry("300x300+120+120")
-    button = Button(top, text="close", command=top.destroy)
-    button.pack()
+def HosoPop(kb):
+
+    varRow = 2
+    varColumn = 0
+
+    for button in buttons:
+
+        command = lambda x=button: select(x)
+
+        if button == "SPACE" :
+            Button(kb, text=button, width=60, bg="#3c4987", fg="#ffffff",
+                   activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=6,
+                   pady=1, bd=2, command=command).grid(row=7, column=16)
+
+        else:
+            Button(kb, text=button, width=5, bg="#3c4987", fg="#ffffff",
+                   activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
+                   pady=4, bd=2, command=command).grid(row=varRow, column=varColumn)
+
+        varColumn += 1
+
+        if varColumn > 14 and varRow == 2:
+            varColumn = 0
+            varRow += 1
+        if varColumn > 14 and varRow == 3:
+            varColumn = 0
+            varRow += 1
 
 
-def visual_board():
-    top = Toplevel()
-    top.title("AccessWord")
-    top.geometry("300x300+120+120")
-    button = Button(top, text="close", command=top.destroy)
-    button.pack()
+
+def keyboard():
+    kb = Toplevel()
+    kb.title("AccessWord")
+    kb.resizable(0, 0)
+   # kb.configure(bg='black')
+    global entry
+    entry = Entry(kb, width=128)
+    entry.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
+    # entry.pack()
+    HosoPop(kb)
 
 
-""" מסך ראשי"""
-root = tk.Tk()
+buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
+           'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
+           'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
+           'Space']
+
+# Main Window #
+
+root = Tk()
 root.title("AccessWord")
-l = Label(root, text = "שלום")
-l.place(anchor = NW)
-button1 = Button(root, text="Admin", command=admin_board)
+l = Label(root, text="!שלום")
+l.place(relx=0.45, rely=0.1)
+l = Label(root, text=":אנא בחר את סוג המקלדת הרצויה")
+l.place(relx=0.3, rely=0.25)
+button1 = Button(root, text="Admin", command=keyboard)
 button1.pack()
-button2 = Button(root, text="Hearing impaired", command=hearing_board)
+button1.place(relx=0.5, rely=0.6, anchor=CENTER)
+button2 = Button(root, text="Hearing impaired", command=keyboard)
 button2.pack()
-button3 = Button(root, text="visually impaired", command=visual_board)
+button2.place(relx=0.7, rely=0.6, anchor=CENTER)
+button3 = Button(root, text="visually impaired", command=keyboard)
 button3.pack()
+button3.place(relx=0.3, rely=0.6, anchor=CENTER)
 
 root.geometry("500x300+120+120")
 root.mainloop()
