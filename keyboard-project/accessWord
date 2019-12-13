@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import *
 import sqlite3
 
+#========================Admin_Login========================
 def admin_login():
     root = Tk()
     root.title("Python: Simple Login Application")
@@ -97,15 +98,7 @@ def admin_login():
     btn_login = Button(Form, text="Login", width=45, command=Login)
     btn_login.grid(pady=25, row=3, columnspan=2)
     btn_login.bind('<Return>', Login)
-
-
-def admin_board():
-    top = Toplevel()
-    top.title("AccessWord")
-    top.geometry("300x300+120+120")
-    button = Button(top, text="close", command=top.destroy)
-    button.pack()
-
+#========================End of Admin_Login========================
 
 def select(value):
     if value == "BACK":
