@@ -1,43 +1,181 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+import sqlite3
+
+#========================Admin_Login========================
+def admin_login():
+    root = Tk()
+    root.title("Python: Simple Login Application")
+    width = 400
+    height = 280
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+    x = (screen_width / 2) - (width / 2)
+    y = (screen_height / 2) - (height / 2)
+    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    root.resizable(0, 0)
+
+    # ==============================METHODS========================================
+    def Database():
+        global conn, cursor
+        conn = sqlite3.connect("pythontut.db")
+        cursor = conn.cursor()
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS `member` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
+        cursor.execute("SELECT * FROM `member` WHERE `username` = 'admin' AND `password` = 'admin'")
+        if cursor.fetchone() is None:
+            cursor.execute("INSERT INTO `member` (username, password) VALUES('admin', 'admin')")
+            conn.commit()
+
+    def Login(event=None):
+        Database()
+
+        if USERNAME.get() == "" or PASSWORD.get() == "":
+            lbl_text.config(text="Please complete the required field!", fg="red")
+        else:
+            cursor.execute("SELECT * FROM `member` WHERE `username` = ? AND `password` = ?",
+                           (USERNAME.get(), PASSWORD.get()))
+            if cursor.fetchone() is not None:
+                HomeWindow()
+                USERNAME.set("")
+                PASSWORD.set("")
+                lbl_text.config(text="")
+            else:
+                lbl_text.config(text="Invalid username or password", fg="red")
+                USERNAME.set("")
+                PASSWORD.set("")
+        cursor.close()
+        conn.close()
+
+    def HomeWindow():
+        global Home
+        root.withdraw()
+        Home = Toplevel()
+        Home.title("Python: Simple Login Application")
+        width = 600
+        height = 500
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.resizable(0, 0)
+        Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        lbl_home = Label(Home, text="Successfully Login!", font=('times new roman', 20)).pack()
+        btn_back = Button(Home, text='Back', command=Back).pack(pady=20, fill=X)
+
+    def Back():
+        Home.destroy()
+        root.deiconify()
+
+    # ==============================VARIABLES======================================
+    USERNAME = StringVar()
+    PASSWORD = StringVar()
+
+    # ==============================FRAMES=========================================
+    Top = Frame(root, bd=2, relief=RIDGE)
+    Top.pack(side=TOP, fill=X)
+    Form = Frame(root, height=200)
+    Form.pack(side=TOP, pady=20)
+
+    # ==============================LABELS=========================================
+    lbl_title = Label(Top, text="Python: Simple Login Application", font=('arial', 15))
+    lbl_title.pack(fill=X)
+    lbl_username = Label(Form, text="Username:", font=('arial', 14), bd=15)
+    lbl_username.grid(row=0, sticky="e")
+    lbl_password = Label(Form, text="Password:", font=('arial', 14), bd=15)
+    lbl_password.grid(row=1, sticky="e")
+    lbl_text = Label(Form)
+    lbl_text.grid(row=2, columnspan=2)
+
+    # ==============================ENTRY WIDGETS==================================
+    username = Entry(Form, textvariable=USERNAME, font=(14))
+    username.grid(row=0, column=1)
+    password = Entry(Form, textvariable=PASSWORD, show="*", font=(14))
+    password.grid(row=1, column=1)
+
+    # ==============================BUTTON WIDGETS=================================
+    btn_login = Button(Form, text="Login", width=45, command=Login)
+    btn_login.grid(pady=25, row=3, columnspan=2)
+    btn_login.bind('<Return>', Login)
+#========================End of Admin_Login========================
+
+def select(value):
+    if value == "BACK":
+        entry.delete(len(entry.get()) - 1, END)
+
+    elif value == "SPACE":
+        entry.insert(END, ' ')
+    elif value == " Tab ":
+        entry.insert(END, '    ')
+    else:
+        entry.insert(END, value)
 
 
-def admin_board():
-    top = Toplevel()
-    top.title("AccessWord")
-    top.geometry("300x300+120+120")
-    button = Button(top, text="close", command=top.destroy)
-    button.pack()
+def HosoPop(kb):
+
+    varRow = 2
+    varColumn = 0
+
+    for button in buttons:
+
+        command = lambda x=button: select(x)
+
+        if button == "SPACE" :
+            Button(kb, text=button, width=60, bg="#3c4987", fg="#ffffff",
+                   activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=6,
+                   pady=1, bd=2, command=command).grid(row=7, column=16)
+
+        else:
+            Button(kb, text=button, width=5, bg="#3c4987", fg="#ffffff",
+                   activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
+                   pady=4, bd=2, command=command).grid(row=varRow, column=varColumn)
+
+        varColumn += 1
+
+        if varColumn > 14 and varRow == 2:
+            varColumn = 0
+            varRow += 1
+        if varColumn > 14 and varRow == 3:
+            varColumn = 0
+            varRow += 1
 
 
-def hearing_board():
-    top = Toplevel()
-    top.title("AccessWord")
-    top.geometry("300x300+120+120")
-    button = Button(top, text="close", command=top.destroy)
-    button.pack()
+
+def keyboard():
+    kb = Toplevel()
+    kb.title("AccessWord")
+    kb.resizable(0, 0)
+   # kb.configure(bg='black')
+    global entry
+    entry = Entry(kb, width=128)
+    entry.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
+    # entry.pack()
+    HosoPop(kb)
 
 
-def visual_board():
-    top = Toplevel()
-    top.title("AccessWord")
-    top.geometry("300x300+120+120")
-    button = Button(top, text="close", command=top.destroy)
-    button.pack()
+buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
+           'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
+           'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
+           'Space']
 
+# Main Window #
 
-""" מסך ראשי"""
-root = tk.Tk()
+root = Tk()
 root.title("AccessWord")
-l = Label(root, text = "שלום")
-l.place(anchor = NW)
-button1 = Button(root, text="Admin", command=admin_board)
+l = Label(root, text="!שלום")
+l.place(relx=0.45, rely=0.1)
+l = Label(root, text=":אנא בחר את סוג המקלדת הרצויה")
+l.place(relx=0.3, rely=0.25)
+button1 = Button(root, text="Admin", command=admin_login)
 button1.pack()
-button2 = Button(root, text="Hearing impaired", command=hearing_board)
+button1.place(relx=0.5, rely=0.6, anchor=CENTER)
+button2 = Button(root, text="Hearing impaired", command=keyboard)
 button2.pack()
-button3 = Button(root, text="visually impaired", command=visual_board)
+button2.place(relx=0.7, rely=0.6, anchor=CENTER)
+button3 = Button(root, text="visually impaired", command=keyboard)
 button3.pack()
+button3.place(relx=0.3, rely=0.6, anchor=CENTER)
 
 root.geometry("500x300+120+120")
 root.mainloop()
