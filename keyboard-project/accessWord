@@ -18,16 +18,16 @@ def admin_login():
     # ==============================METHODS========================================
     def Database():
         global conn, cursor
-        conn = sqlite3.connect("AdminPassword.db")
+        conn = sqlite3.connect("pythontut.db")
         cursor = conn.cursor()
-      #  cursor.execute(
-         #   "CREATE TABLE IF NOT EXISTS `member` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
-        #cursor.execute("SELECT * FROM `member` WHERE `username` = 'admin' AND `password` = 'admin'")
-       # if cursor.fetchone() is None:
-            #cursor.execute("INSERT INTO `member` (username, password) VALUES('admin', 'admin')")
-           # conn.commit()
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS `member` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
+        cursor.execute("SELECT * FROM `member` WHERE `username` = 'admin' AND `password` = 'admin'")
+        if cursor.fetchone() is None:
+            cursor.execute("INSERT INTO `member` (username, password) VALUES('admin', 'admin')")
+            conn.commit()
 
-    def Login():
+    def Login(event=None):
         Database()
 
         if USERNAME.get() == "" or PASSWORD.get() == "":
@@ -51,7 +51,7 @@ def admin_login():
         global Home
         root.withdraw()
         Home = Toplevel()
-        Home.title("<Admin Login : Access Word>")
+        Home.title("Python: Simple Login Application")
         width = 600
         height = 500
         screen_width = root.winfo_screenwidth()
