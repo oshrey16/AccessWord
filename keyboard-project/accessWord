@@ -5,8 +5,8 @@ import sqlite3
 
 #========================Admin_Login========================
 def admin_login():
-    root = Tk()
-    root.title("Python: Simple Login Application")
+    root = tk.Toplevel()
+    root.title("AccessWord: Admin Login")
     width = 400
     height = 280
     screen_width = root.winfo_screenwidth()
@@ -16,10 +16,14 @@ def admin_login():
     root.geometry("%dx%d+%d+%d" % (width, height, x, y))
     root.resizable(0, 0)
 
+    # ==============================VARIABLES======================================
+    USERNAME = StringVar()
+    PASSWORD = StringVar()
+
     # ==============================METHODS========================================
     def Database():
         global conn, cursor
-        conn = sqlite3.connect("pythontut.db")
+        conn = sqlite3.connect("AdminPassword.db")
         cursor = conn.cursor()
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS `member` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
@@ -30,7 +34,6 @@ def admin_login():
 
     def Login(event=None):
         Database()
-
         if USERNAME.get() == "" or PASSWORD.get() == "":
             lbl_text.config(text="Please complete the required field!", fg="red")
         else:
@@ -62,16 +65,11 @@ def admin_login():
         root.resizable(0, 0)
         Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
         lbl_home = Label(Home, text="Successfully Login!", font=('times new roman', 20)).pack()
-        btn_back = Button(Home, text='Back', command=Back).pack(pady=20, fill=X)
+        btn_back = Button(Home, text='OK', command=CloseLogin).pack(pady=20, fill=X)
 
-    def Back():
+    def CloseLogin():
         Home.destroy()
-        root.deiconify()
-
-    # ==============================VARIABLES======================================
-    USERNAME = StringVar()
-    PASSWORD = StringVar()
-
+        keyboard()      # Change To Admin Frame!!!
     # ==============================FRAMES=========================================
     Top = Frame(root, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
@@ -79,7 +77,7 @@ def admin_login():
     Form.pack(side=TOP, pady=20)
 
     # ==============================LABELS=========================================
-    lbl_title = Label(Top, text="Python: Simple Login Application", font=('arial', 15))
+    lbl_title = Label(Top, text="AccessWord: Admin Login", font=('arial', 15))
     lbl_title.pack(fill=X)
     lbl_username = Label(Form, text="Username:", font=('arial', 14), bd=15)
     lbl_username.grid(row=0, sticky="e")
