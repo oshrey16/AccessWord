@@ -56,8 +56,8 @@ def admin_login():
         root.withdraw()
         Home = Toplevel()
         Home.title("Python: Simple Login Application")
-        width = 600
-        height = 500
+        width = 400
+        height = 100
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
@@ -115,15 +115,31 @@ def HosoPop(kb):
     varRow = 2
     varColumn = 0
 
+    def OptionsKeyboard():
+        kb = tk.Toplevel()
+        kb.title("KeyBoard - Options")
+        width = 600
+        height = 600
+        screen_width = kb.winfo_screenwidth()
+        screen_height = kb.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        kb.resizable(0, 0)
+
     for button in buttons:
 
         command = lambda x=button: select(x)
 
-        if button == "SPACE" :
-            Button(kb, text=button, width=60, bg="#3c4987", fg="#ffffff",
-                   activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=6,
-                   pady=1, bd=2, command=command).grid(row=7, column=16)
+        if button == "Space" :
+            Button(kb, text=button, width=70, bg="#3c4987", fg="#ffffff",
+                   activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, command=lambda x=button: select(" ")).grid(row=5, column=0,columnspan = 11)
 
+        elif(button == "Options"):
+            Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
+                    activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                    pady=1, bd=2, command=OptionsKeyboard).grid(row=2, column=16)
         else:
             Button(kb, text=button, width=5, bg="#3c4987", fg="#ffffff",
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
@@ -155,7 +171,7 @@ def keyboard():
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
            'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
            'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
-           'Space']
+           'Space' , 'Options']
 
 # Main Window #
 
