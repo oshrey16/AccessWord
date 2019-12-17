@@ -4,7 +4,7 @@ from tkinter import *
 import sqlite3
 
 
-
+#========================user_login_blind========================
 def user_login_blind():
     root = tk.Toplevel()
     root.title("AccessWord: user Login")
@@ -77,7 +77,7 @@ def user_login_blind():
     Form.pack(side=TOP, pady=20)
 
     # ==============================LABELS=========================================
-    lbl_title = Label(Top, text="AccessWord: Admin Login", font=('arial', 15))
+    lbl_title = Label(Top, text="AccessWord: User Login", font=('arial', 15))
     lbl_title.pack(fill=X)
     lbl_username = Label(Form, text="Username:", font=('arial', 14), bd=15)
     lbl_username.grid(row=0, sticky="e")
@@ -94,9 +94,12 @@ def user_login_blind():
 
     # ==============================BUTTON WIDGETS=================================
     btn_login = Button(Form, text="Login", width=45, command=Login)
-    btn_login.grid(pady=25, row=3, columnspan=2)
+    btn_login.grid(pady=0, row=3, columnspan=2)
     btn_login.bind('<Return>', Login)
-#========================End of Admin_Login========================
+    btn_register = Button(Form, text="Register", width=20, command=Login)
+    btn_register.grid(pady=10, row=4, columnspan=2)
+    btn_login.bind('<Return>', Login)
+#========================user_login_blind========================
 
 
 #========================Admin_Login========================
