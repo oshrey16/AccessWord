@@ -4,6 +4,10 @@
     <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AdminPassword.db" beforeDir="false" afterPath="$PROJECT_DIR$/AdminPassword.db" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/AdminPassword.db.sqbpro" beforeDir="false" />
+>>>>>>> b2dd48440885d94c0833ef49e7e02f70c93c52f2
       <change beforePath="$PROJECT_DIR$/accessWord" beforeDir="false" afterPath="$PROJECT_DIR$/accessWord" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -132,8 +136,11 @@
       <workItem from="1575811571727" duration="5756000" />
       <workItem from="1576251227045" duration="369000" />
       <workItem from="1576251624877" duration="158000" />
+<<<<<<< HEAD
       <workItem from="1576251996536" duration="9999000" />
       <workItem from="1576572123383" duration="2194000" />
+=======
+>>>>>>> b2dd48440885d94c0833ef49e7e02f70c93c52f2
     </task>
     <servers />
   </component>
@@ -167,6 +174,9 @@
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/keyboard_project$accessWord.coverage" NAME="accessWord Coverage Results" MODIFIED="1576574559724" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+=======
+>>>>>>> b2dd48440885d94c0833ef49e7e02f70c93c52f2
   </component>
 </project>
