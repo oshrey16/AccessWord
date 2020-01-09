@@ -5,10 +5,10 @@ import sqlite3
 
 
 # ====================================Register==========================================
-def user_Register():
+def user_Register(disability):
     root = tk.Toplevel()
     root.title("AccessWord: Register User")
-    width = 520
+    width = 550
     height = 480
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
@@ -22,7 +22,7 @@ def user_Register():
     PASSWORD2 = StringVar()
     AGE = StringVar()
     EMAIL = StringVar()
-    LAKOY = Listbox()
+    DISABILITY = StringVar()
 
     # ==============================METHODS========================================
     def Database():
@@ -41,18 +41,35 @@ def user_Register():
         if USERNAME.get() == "" or PASSWORD.get() == "" or AGE.get() == "" or EMAIL.get() == "":
             lbl_text.config(text="Please complete the required field!", fg="red")
         else:
-            cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = ?  AND `password` = ? AND `age` = ? AND `email` = ?", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
-            if cursor.fetchone() is not None:
-                lbl_text.config(text="User Exsiests!!!", fg="red")
-                USERNAME.set("")
-                PASSWORD.set("")
-            else:
-                cursor.execute("INSERT INTO `User_Blind` (username, password, age, email) VALUES (?,?,?,?)", (USERNAME.get(),PASSWORD.get(),AGE.get(),EMAIL.get()))
-                conn.commit()
-                HomeWindow()
-                USERNAME.set("")
-                PASSWORD.set("")
-                lbl_text.config(text="")
+            if(disability == 'Visually impaired'):
+                cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = ?  AND `password` = ? AND `age` = ? AND `email` = ?", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
+                if cursor.fetchone() is not None:
+                    lbl_text.config(text="User Exsiests!!!", fg="red")
+                    USERNAME.set("")
+                    PASSWORD.set("")
+                else:
+                    cursor.execute("INSERT INTO `User_Blind` (username, password, age, email) VALUES (?,?,?,?)", (USERNAME.get(),PASSWORD.get(),AGE.get(),EMAIL.get()))
+                    conn.commit()
+                    HomeWindow()
+                    USERNAME.set("")
+                    PASSWORD.set("")
+                    lbl_text.config(text="")
+            elif(disability == 'Hearing impaired'):
+                cursor.execute(
+                    "SELECT * FROM `User_Deaf` WHERE `username` = ?  AND `password` = ? AND `age` = ? AND `email` = ?",
+                    (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
+                if cursor.fetchone() is not None:
+                    lbl_text.config(text="User Exsiests!!!", fg="red")
+                    USERNAME.set("")
+                    PASSWORD.set("")
+                else:
+                    cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email) VALUES (?,?,?,?)",
+                                   (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
+                    conn.commit()
+                    HomeWindow()
+                    USERNAME.set("")
+                    PASSWORD.set("")
+                    lbl_text.config(text="")
 
         cursor.close()
         conn.close()
@@ -92,12 +109,14 @@ def user_Register():
     lbl_password.grid(row=1, sticky="e")
     lbl_password2 = Label(Form, text="Enter Password again:", font=('arial', 14), bd=15)
     lbl_password2.grid(row=2, sticky="e")
-    lbl_username = Label(Form, text="Age:", font=('arial', 14), bd=15)
-    lbl_username.grid(row=3, sticky="e")
-    lbl_username = Label(Form, text="Email:", font=('arial', 14), bd=15)
-    lbl_username.grid(row=4, sticky="e")
-    lbl_username = Label(Form, text="Lakoy:", font=('arial', 14), bd=15)
-    lbl_username.grid(row=5, sticky="e")
+    lbl_age = Label(Form, text="Age:", font=('arial', 14), bd=15)
+    lbl_age.grid(row=3, sticky="e")
+    lbl_email = Label(Form, text="Email:", font=('arial', 14), bd=15)
+    lbl_email.grid(row=4, sticky="e")
+    lbl_disability = Label(Form, text="Disability:", font=('arial', 14), bd=15)
+    lbl_disability.grid(row=5, sticky="e")
+    lbl_disabilityshow = Label(Form, text=disability, font=('arial', 14), bd=15)
+    lbl_disabilityshow.grid(row=5, column=1)
     lbl_text = Label(Form)
     lbl_text.grid(row=6, columnspan=2)
 
@@ -122,17 +141,14 @@ def user_Register():
     age.grid(row=3, column=1)
     email = Entry(Form, textvariable=EMAIL, font=(14))
     email.grid(row=4, column=1)
-    lakoy = Entry(Form, textvariable=LAKOY, font=(14))
-    lakoy.grid(row=5, column=1)
     # ==============================BUTTON WIDGETS=================================
     btn_login = Button(Form, text="Register", width=45, command=Register)
-    btn_login.grid(pady=0, row=7, columnspan=2)
+    btn_login.grid(pady=0, row=8, columnspan=2)
     btn_login.bind('<Return>', Register)
     #btn_register = Button(Form, text="Register", width=20, command=Register_Win)
     #btn_register.grid(pady=10, row=4, columnspan=2)
     #btn_register.bind('<Return>', Login)
 # ====================================Register==========================================
-
 #========================user_login_blind========================
 def user_login_blind():
     root = tk.Toplevel()
@@ -157,9 +173,6 @@ def user_login_blind():
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS `User_Blind` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
         cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = 'admin' AND `password` = 'admin'")
-        #if cursor.fetchone() is None:
-            #cursor.execute("INSERT INTO `User_Blind` (username, password) VALUES('admin', 'admin')")
-            #conn.commit()
 
     def Login(event=None):
         Database()
@@ -202,7 +215,7 @@ def user_login_blind():
 
     def user_Register_blind():
         root.destroy()
-        user_Register()
+        user_Register('visually impaired')
 
     # ==============================FRAMES=========================================
     Top = Frame(root, bd=2, relief=RIDGE)
@@ -302,6 +315,10 @@ def user_login_deaf():
     def CloseLogin():
         Home.destroy()
         keyboard()      # Change To User_Blind Frame!!!
+
+    def user_Register_hearing():
+        root.destroy()
+        user_Register('Hearing impaired')
     # ==============================FRAMES=========================================
     Top = Frame(root, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
@@ -329,6 +346,9 @@ def user_login_deaf():
     btn_login.grid(pady=0, row=3, columnspan=2)
     btn_login.bind('<Return>', Login)
     btn_register = Button(Form, text="Register", width=20, command=Login)
+    btn_register.grid(pady=10, row=4, columnspan=2)
+    btn_register.bind('<Return>', Login)
+    btn_register = Button(Form, text="Register", width=20, command=user_Register_hearing)
     btn_register.grid(pady=10, row=4, columnspan=2)
     btn_register.bind('<Return>', Login)
 #========================user_login_deaf========================
