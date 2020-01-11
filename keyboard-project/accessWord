@@ -487,26 +487,30 @@ def Admin_Frame():
         y = (screen_height / 2) - (height / 2)
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
-        listbox = Listbox(root, font=('monospace', 10), width=70, height=20)
+        scrollbar = tk.Scrollbar(root, orient="vertical")
+        listbox = tk.Listbox(root, font=('ariel', 10), width=90, height=20)
         listbox.pack(expand='yes', fill='both')
         listbox.place(relx=0.5, rely=0.5, anchor=CENTER)
-
+        scrollbar.config(command=listbox.yview)
+        scrollbar.pack(side="right", fill="y")
+        listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(('UserName'), ('Password'), ('Age'), ('Email'), ('Phone')))
         def viewUsers(x):
-            listbox.delete(0,'end')
+            listbox.delete(0, 'end')
+            listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(('UserName'), ('Password'), ('Age'), ('Email'),('Phone')))
             if(x=='visually impaired'):
                 conn = sqlite3.connect("AdminPassword.db")
                 cur = conn.cursor()
                 cur.execute("SELECT * FROM `User_Blind`")
                 record = cur.fetchall()
                 for row in record:
-                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3], row[4]))
+                    listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(row[1], row[2], row[3], row[4], row[5]))
             else:
                 conn = sqlite3.connect("AdminPassword.db")
                 cur = conn.cursor()
                 cur.execute("SELECT * FROM `User_Deaf`")
                 record = cur.fetchall()
                 for row in record:
-                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3],row[4]))
+                    listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(row[1], row[2], row[3], row[4], row[5]))
         # ------Buttons------
         button1 = Button(root, text="Visually impaired", command=lambda: viewUsers('visually impaired'))
         button1.pack()
