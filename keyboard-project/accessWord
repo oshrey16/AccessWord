@@ -492,6 +492,7 @@ def Admin_Frame():
         listbox.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         def viewUsers(x):
+            listbox.delete(0,'end')
             if(x=='visually impaired'):
                 conn = sqlite3.connect("AdminPassword.db")
                 cur = conn.cursor()
@@ -505,7 +506,7 @@ def Admin_Frame():
                 cur.execute("SELECT * FROM `User_Deaf`")
                 record = cur.fetchall()
                 for row in record:
-                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3]))
+                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3],row[4]))
         # ------Buttons------
         button1 = Button(root, text="Visually impaired", command=lambda: viewUsers('visually impaired'))
         button1.pack()
