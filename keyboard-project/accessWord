@@ -418,7 +418,7 @@ def admin_login():
 
     def CloseLogin():
         Home.destroy()
-        keyboard()      # Change To Admin Frame!!!
+        Admin_Frame()
     # ==============================FRAMES=========================================
     Top = Frame(root, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
@@ -446,6 +446,53 @@ def admin_login():
     btn_login.grid(pady=25, row=3, columnspan=2)
     btn_login.bind('<Return>', Login)
 #========================End of Admin_Login========================
+#========================Admin_Frame========================
+def Admin_Frame():
+    def Admin_Frame_Main():
+        root = tk.Toplevel()
+        root.title("AccessWord: Admin")
+        width = 380
+        height = 180
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root.resizable(0, 0)
+        #------Buttons------
+        button1 = Button(root, text="Show Users Of AccessWord", command=Show_users)
+        button1.pack()
+        button1.place(relx=0.5, rely=0.3, anchor=CENTER)
+        button2 = Button(root, text="Show Reports", command=Show_reports)
+        button2.pack()
+        button2.place(relx=0.5, rely=0.5, anchor=CENTER)
+
+    def Show_users():
+        root = tk.Toplevel()
+        root.title("AccessWord: Users Of AccessWord")
+        width = 750
+        height = 580
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root.resizable(0, 0)
+
+    def Show_reports():
+        root = tk.Toplevel()
+        root.title("AccessWord: Reports")
+        width = 550
+        height = 480
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root.resizable(0, 0)
+
+    Admin_Frame_Main()
+#========================End of Admin_Frame========================
 
 def select(value):
     if value == "BACK":
