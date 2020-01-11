@@ -32,44 +32,45 @@ def user_Register(disability):
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS `User_Blind` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT , age TEXT, email TEXT)")
         cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = 'admin' AND `password` = 'admin' AND `age` = 'admin' AND `email` = 'admin'")
-        #if cursor.fetchone() is None:
-            #cursor.execute("INSERT INTO `User_Blind` (username, password) VALUES('admin', 'admin')")
-            #conn.commit()
 
     def Register(event=None):
         Database()
         if USERNAME.get() == "" or PASSWORD.get() == "" or AGE.get() == "" or EMAIL.get() == "":
             lbl_text.config(text="Please complete the required field!", fg="red")
         else:
-            if(disability == 'Visually impaired'):
-                cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = ?  AND `password` = ? AND `age` = ? AND `email` = ?", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
-                if cursor.fetchone() is not None:
-                    lbl_text.config(text="User Exsiests!!!", fg="red")
-                    USERNAME.set("")
-                    PASSWORD.set("")
-                else:
+            if(disability == 'visually impaired'):
+                cursor.execute("SELECT `username` FROM `User_Blind`")
+                record = cursor.fetchall()
+                found = False
+                for row in record:
+                    print(row[0])
+                    if USERNAME.get() == row[0]:
+                        lbl_text.config(text="User Exsiests!!!", fg="red")
+                        USERNAME.set("")
+                        PASSWORD.set("")
+                        PASSWORD2.set("")
+                        found = True
+                if found == False:
                     cursor.execute("INSERT INTO `User_Blind` (username, password, age, email) VALUES (?,?,?,?)", (USERNAME.get(),PASSWORD.get(),AGE.get(),EMAIL.get()))
                     conn.commit()
                     HomeWindow()
-                    USERNAME.set("")
-                    PASSWORD.set("")
-                    lbl_text.config(text="")
+
             elif(disability == 'Hearing impaired'):
-                cursor.execute(
-                    "SELECT * FROM `User_Deaf` WHERE `username` = ?  AND `password` = ? AND `age` = ? AND `email` = ?",
-                    (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
-                if cursor.fetchone() is not None:
-                    lbl_text.config(text="User Exsiests!!!", fg="red")
-                    USERNAME.set("")
-                    PASSWORD.set("")
-                else:
-                    cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email) VALUES (?,?,?,?)",
-                                   (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
+                cursor.execute("SELECT `username` FROM `User_Deaf`")
+                record = cursor.fetchall()
+                found = False
+                for row in record:
+                    print(row[0])
+                    if USERNAME.get() == row[0]:
+                        lbl_text.config(text="User Exsiests!!!", fg="red")
+                        USERNAME.set("")
+                        PASSWORD.set("")
+                        PASSWORD2.set("")
+                        found = True
+                if found == False:
+                    cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email) VALUES (?,?,?,?)",(USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
                     conn.commit()
                     HomeWindow()
-                    USERNAME.set("")
-                    PASSWORD.set("")
-                    lbl_text.config(text="")
 
         cursor.close()
         conn.close()
