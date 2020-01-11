@@ -4,6 +4,7 @@
     <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AdminPassword.db" beforeDir="false" afterPath="$PROJECT_DIR$/AdminPassword.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AdminPassword.db-journal" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/accessWord" beforeDir="false" afterPath="$PROJECT_DIR$/accessWord" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -134,6 +135,11 @@
       <workItem from="1576251624877" duration="158000" />
       <workItem from="1576575442969" duration="35000" />
       <workItem from="1576575495407" duration="15539000" />
+      <workItem from="1577447425652" duration="1836000" />
+      <workItem from="1578488569726" duration="6834000" />
+      <workItem from="1578586427836" duration="8659000" />
+      <workItem from="1578604488620" duration="354000" />
+      <workItem from="1578726354714" duration="2445000" />
     </task>
     <servers />
   </component>
@@ -167,6 +173,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/keyboard_project$accessWord.coverage" NAME="accessWord Coverage Results" MODIFIED="1576623372262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/keyboard_project$accessWord.coverage" NAME="accessWord Coverage Results" MODIFIED="1578728671034" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
