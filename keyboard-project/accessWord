@@ -469,7 +469,7 @@ def Admin_Frame():
         button3 = Button(root, text="Open KeyBoard", command=keyboard)
         button3.pack()
         button3.place(relx=0.5, rely=0.7, anchor=CENTER)
-        button4 = Button(root, text="contact to developer", command=keyboard)
+        button4 = Button(root, text="contact to developer", command=Show_contact)
         button4.pack()
         button4.place(relx=0.5, rely=0.9, anchor=CENTER)
         # ------Labels------
@@ -506,6 +506,43 @@ def Admin_Frame():
         y = (screen_height / 2) - (height / 2)
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
+
+    def Show_contact():
+        root = tk.Toplevel()
+        root.title("AccessWord: Contact To Developer")
+        width = 380
+        height = 250
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root.resizable(0, 0)
+        #---Frames---
+        Top = Frame(root, bd=2, relief=RIDGE)
+        Top.pack(side=TOP, fill=X)
+        Form = Frame(root, height=200)
+        Form.pack(side=TOP, pady=0)
+        Form.place(relx=0.1, rely=0.2)
+        # ---End Frames---
+        lbl_title = Label(Top, text="Contact To Developer", font=('arial', 15))
+        lbl_title.pack(fill=X)
+        lbl_name = Label(Form, text="Name:", font=('arial', 12), bd=15)
+        lbl_name.grid(row=0, column=0, sticky="e")
+        lbl_email = Label(Form, text="Email:", font=('arial', 12), bd=15)
+        lbl_email.grid(row=1, column=0, sticky="e")
+        lbl_phone = Label(Form, text="Phone Number:", font=('arial', 12), bd=15)
+        lbl_phone.grid(row=2, column=0, sticky="e")
+        ###
+        lbl_name_s = Label(Form, text="SCE", font=('arial', 12), bd=15)
+        lbl_name_s.grid(row=0, column=1, sticky="e")
+        lbl_email_s = Label(Form, text="Oshreav@ac.sce.ac.il", font=('arial', 12), bd=15)
+        lbl_email_s.grid(row=1, column=1, sticky="e")
+        lbl_phone_s = Label(Form, text="0504995388", font=('arial', 12), bd=15)
+        lbl_phone_s.grid(row=2, column=1, sticky="e")
+
+
+
 
     Admin_Frame_Main()
 #========================End of Admin_Frame========================
