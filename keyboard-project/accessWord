@@ -487,8 +487,9 @@ def Admin_Frame():
         y = (screen_height / 2) - (height / 2)
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
-        listbox = Listbox(root, font=('monospace'))
-        listbox.pack()
+        listbox = Listbox(root, font=('monospace', 10), width=70, height=20)
+        listbox.pack(expand='yes', fill='both')
+        listbox.place(relx=0.5, rely=0.5, anchor=CENTER)
 
         def viewUsers(x):
             if(x=='visually impaired'):
@@ -497,7 +498,7 @@ def Admin_Frame():
                 cur.execute("SELECT * FROM `User_Blind`")
                 record = cur.fetchall()
                 for row in record:
-                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3]))
+                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3], row[4]))
             else:
                 conn = sqlite3.connect("AdminPassword.db")
                 cur = conn.cursor()
@@ -506,10 +507,10 @@ def Admin_Frame():
                 for row in record:
                     listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3]))
         # ------Buttons------
-        button1 = Button(root, text="Visually impaired", command=viewUsers('visually impaired'))
+        button1 = Button(root, text="Visually impaired", command=lambda: viewUsers('visually impaired'))
         button1.pack()
         button1.place(relx=0.3, rely=0.05, anchor=CENTER)
-        button2 = Button(root, text="Hearing impaired", command=viewUsers('Hearing impaired'))
+        button2 = Button(root, text="Hearing impaired", command=lambda: viewUsers('Hearing impaired'))
         button2.pack()
         button2.place(relx=0.6, rely=0.05, anchor=CENTER)
 
