@@ -43,7 +43,6 @@ def user_Register(disability):
                 record = cursor.fetchall()
                 found = False
                 for row in record:
-                    print(row[0])
                     if USERNAME.get() == row[0]:
                         lbl_text.config(text="User Exsiests!!!", fg="red")
                         USERNAME.set("")
@@ -60,7 +59,6 @@ def user_Register(disability):
                 record = cursor.fetchall()
                 found = False
                 for row in record:
-                    print(row[0])
                     if USERNAME.get() == row[0]:
                         lbl_text.config(text="User Exsiests!!!", fg="red")
                         USERNAME.set("")
