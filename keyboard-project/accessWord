@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import *
 import sqlite3
-
+from tkinter import Listbox
 
 # ====================================Register==========================================
 def user_Register(disability):
@@ -487,13 +487,34 @@ def Admin_Frame():
         y = (screen_height / 2) - (height / 2)
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
+        listbox = Listbox(root, font=('monospace'))
+        listbox.pack()
+
+        def viewUsers(x):
+            if(x=='visually impaired'):
+                conn = sqlite3.connect("AdminPassword.db")
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM `User_Blind`")
+                record = cur.fetchall()
+                for row in record:
+                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3]))
+            else:
+                conn = sqlite3.connect("AdminPassword.db")
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM `User_Deaf`")
+                record = cur.fetchall()
+                for row in record:
+                    listbox.insert('end', '{:10s}|{:15s}|{:10s}'.format(row[1], row[2], row[3]))
         # ------Buttons------
-        button1 = Button(root, text="Visually impaired", command=Show_users)
+        button1 = Button(root, text="Visually impaired", command=viewUsers('visually impaired'))
         button1.pack()
         button1.place(relx=0.3, rely=0.05, anchor=CENTER)
-        button2 = Button(root, text="Hearing impaired", command=Show_reports)
+        button2 = Button(root, text="Hearing impaired", command=viewUsers('Hearing impaired'))
         button2.pack()
         button2.place(relx=0.6, rely=0.05, anchor=CENTER)
+
+
+
 
     def Show_reports():
         root = tk.Toplevel()
