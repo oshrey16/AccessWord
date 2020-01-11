@@ -450,9 +450,9 @@ def admin_login():
 def Admin_Frame():
     def Admin_Frame_Main():
         root = tk.Toplevel()
-        root.title("AccessWord: Admin")
+        root.title("AccessWord: Admin Options")
         width = 380
-        height = 180
+        height = 200
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
@@ -466,6 +466,15 @@ def Admin_Frame():
         button2 = Button(root, text="Show Reports", command=Show_reports)
         button2.pack()
         button2.place(relx=0.5, rely=0.5, anchor=CENTER)
+        button3 = Button(root, text="Open KeyBoard", command=keyboard)
+        button3.pack()
+        button3.place(relx=0.5, rely=0.7, anchor=CENTER)
+        button4 = Button(root, text="contact to developer", command=keyboard)
+        button4.pack()
+        button4.place(relx=0.5, rely=0.9, anchor=CENTER)
+        # ------Labels------
+        lbl_title = Label(root, text="AccessWord: Admin Options", font=('arial', 15))
+        lbl_title.pack(fill=X)
 
     def Show_users():
         root = tk.Toplevel()
@@ -478,6 +487,13 @@ def Admin_Frame():
         y = (screen_height / 2) - (height / 2)
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
+        # ------Buttons------
+        button1 = Button(root, text="Visually impaired", command=Show_users)
+        button1.pack()
+        button1.place(relx=0.3, rely=0.05, anchor=CENTER)
+        button2 = Button(root, text="Hearing impaired", command=Show_reports)
+        button2.pack()
+        button2.place(relx=0.6, rely=0.05, anchor=CENTER)
 
     def Show_reports():
         root = tk.Toplevel()
