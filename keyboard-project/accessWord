@@ -599,14 +599,48 @@ def Admin_Frame():
 def OptionsKeyboard():
     kb = tk.Toplevel()
     kb.title("KeyBoard - Options")
-    width = 600
-    height = 600
+    width = 780
+    height = 620
     screen_width = kb.winfo_screenwidth()
     screen_height = kb.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
     y = (screen_height / 2) - (height / 2)
     kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
     kb.resizable(0, 0)
+    # ==============================FRAMES=========================================
+    Top = Frame(kb, bd=2, relief=RIDGE)
+    Top.pack(side=TOP, fill=X)
+    Form = Frame(kb, height=200)
+    Form.pack(side=TOP, pady=0)
+    Form.place(relx=0.1, rely=0.1)
+    # ==============================LABELS=========================================
+    lbl_title = Label(Top, text="AccessWord: " + loguser + " Options", font=('arial', 15))
+    lbl_title.pack(fill=X)
+    lbl_window_size = Label(Form, text="window size:", font=('arial', 14), bd=15)
+    lbl_window_size.grid(row=0, column=0, sticky="e")
+    lbl_font = Label(Form, text="font size:", font=('arial', 14), bd=15)
+    lbl_font.grid(row=0, column=4, sticky="e")
+    lbl_font_color = Label(Form, text="font color:", font=('arial', 14), bd=15)
+    lbl_font_color.grid(row=0, column=10, sticky="e")
+    lbl_back_color = Label(Form, text="backcolor:", font=('arial', 14), bd=15)
+    lbl_back_color.grid(row=0, column=15, sticky="e")
+
+    listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_window_size.pack(expand='yes', fill='both')
+    listbox_window_size.place(relx=0.2, rely=0.32, anchor=CENTER)
+    listbox_window_size.insert('end', '500x300', '500x300','500x300','500x300','500x300')
+    listbox_font = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_font.pack(expand='yes', fill='both')
+    listbox_font.place(relx=0.34, rely=0.32, anchor=CENTER)
+    listbox_font.insert('end', '8', '10', '12', '14', '16', '20')
+    listbox_font_color = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_font_color.pack(expand='yes', fill='both')
+    listbox_font_color.place(relx=0.34, rely=0.32, anchor=CENTER)
+    listbox_font_color.insert('end', '8', '10', '12', '14', '16', '20')
+    listbox_backcolor = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_backcolor.pack(expand='yes', fill='both')
+    listbox_backcolor.place(relx=0.34, rely=0.32, anchor=CENTER)
+    listbox_backcolor.insert('end', '8', '10', '12', '14', '16', '20')
 
 def select(value):
     if value == "BACK":
