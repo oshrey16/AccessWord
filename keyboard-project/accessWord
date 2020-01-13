@@ -625,22 +625,61 @@ def OptionsKeyboard():
     lbl_back_color = Label(Form, text="backcolor:", font=('arial', 14), bd=15)
     lbl_back_color.grid(row=0, column=15, sticky="e")
 
+    # ==============================ListBoxs=========================================
+    def CurSelet(evt):
+        value = str((listbox_window_size.get(ACTIVE)))
+        print (value)
     listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_window_size.pack(expand='yes', fill='both')
     listbox_window_size.place(relx=0.2, rely=0.32, anchor=CENTER)
     listbox_window_size.insert('end', '500x300', '500x300','500x300','500x300','500x300')
+    listbox_window_size.bind('<<ListboxSelect>>', CurSelet)
     listbox_font = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font.pack(expand='yes', fill='both')
     listbox_font.place(relx=0.34, rely=0.32, anchor=CENTER)
     listbox_font.insert('end', '8', '10', '12', '14', '16', '20')
     listbox_font_color = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font_color.pack(expand='yes', fill='both')
-    listbox_font_color.place(relx=0.34, rely=0.32, anchor=CENTER)
-    listbox_font_color.insert('end', '8', '10', '12', '14', '16', '20')
+    listbox_font_color.place(relx=0.5, rely=0.32, anchor=CENTER)
+    listbox_font_color.insert('end', 'black', 'red', 'blue', 'white', 'green')
     listbox_backcolor = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_backcolor.pack(expand='yes', fill='both')
-    listbox_backcolor.place(relx=0.34, rely=0.32, anchor=CENTER)
-    listbox_backcolor.insert('end', '8', '10', '12', '14', '16', '20')
+    listbox_backcolor.place(relx=0.65, rely=0.32, anchor=CENTER)
+    listbox_backcolor.insert('end', 'black', 'red', 'blue', 'white', 'green')
+
+    # ==============================LABELS Corrent Options=========================================
+    Form1 = Frame(kb, height=200)
+    Form1.pack(side=TOP, pady=0)
+    Form1.place(relx=0.1, rely=0.7)
+    lbl_cur_options = Label(Form1, text="Current options:", font=('arial', 16), bd=15)
+    lbl_cur_options.grid(row=0, column=0, sticky="e", columnspan=15)
+    lbl_window_size = Label(Form1, text="window size:", font=('arial', 14), bd=15)
+    lbl_window_size.grid(row=5, column=0, sticky="e")
+    lbl_font = Label(Form1, text="font size:", font=('arial', 14), bd=15)
+    lbl_font.grid(row=5, column=4, sticky="e")
+    lbl_font_color = Label(Form1, text="font color:", font=('arial', 14), bd=15)
+    lbl_font_color.grid(row=5, column=10, sticky="e")
+    lbl_back_color = Label(Form1, text="backcolor:", font=('arial', 14), bd=15)
+    lbl_back_color.grid(row=5, column=15, sticky="e")
+
+    global conn, cursor
+    conn = sqlite3.connect("AdminPassword.db")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM `User_Blind`")
+    record = cursor.fetchall()
+    for row in record:
+        if loguser == row[1]:
+            c_options = (row[6])
+            print (c_options)
+
+    lbl_window_size1 = Label(Form1, text="window size:", font=('arial', 14), bd=15)
+    lbl_window_size1.grid(row=8, column=0, sticky="e")
+    lbl_font1 = Label(Form1, text="font size:", font=('arial', 14), bd=15)
+    lbl_font1.grid(row=8, column=4, sticky="e")
+    lbl_font_color1 = Label(Form1, text="font color:", font=('arial', 14), bd=15)
+    lbl_font_color1.grid(row=8, column=10, sticky="e")
+    lbl_back_color1 = Label(Form1, text="backcolor:", font=('arial', 14), bd=15)
+    lbl_back_color1.grid(row=8, column=15, sticky="e")
 
 def select(value):
     if value == "BACK":
