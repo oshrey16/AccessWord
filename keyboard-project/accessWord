@@ -4,6 +4,7 @@ from tkinter import *
 import sqlite3
 from tkinter import Listbox
 
+loguser=''
 # ====================================Register==========================================
 def user_Register(disability):
     root = tk.Toplevel()
@@ -93,7 +94,11 @@ def user_Register(disability):
 
     def CloseRegister():
         Home.destroy()
-        keyboard()      # Change To User_Blind Frame!!!
+        global loguser
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = disability
+        keyboard()
 
     # ==============================FRAMES=========================================
     Top = Frame(root, bd=2, relief=RIDGE)
@@ -151,7 +156,7 @@ def user_Register(disability):
     btn_login.grid(pady=0, row=8, columnspan=3, column=0)
     btn_login.bind('<Return>', Register)
 # ====================================Register==========================================
-#========================user_login_blind========================
+#========================user_login_visually impaired========================
 def user_login_blind():
     root = tk.Toplevel()
     root.title("AccessWord: user Login")
@@ -185,8 +190,6 @@ def user_login_blind():
                            (USERNAME.get(), PASSWORD.get()))
             if cursor.fetchone() is not None:
                 HomeWindow()
-                USERNAME.set("")
-                PASSWORD.set("")
                 lbl_text.config(text="")
             else:
                 lbl_text.config(text="Invalid username or password", fg="red")
@@ -213,7 +216,11 @@ def user_login_blind():
 
     def CloseLogin():
         Home.destroy()
-        keyboard()      # Change To User_Blind Frame!!!
+        global loguser
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = 'visually impaired'
+        keyboard()
 
     def user_Register_blind():
         root.destroy()
@@ -251,7 +258,7 @@ def user_login_blind():
 #========================user_login_blind========================
 
 
-#========================user_login_deaf========================
+#========================user_login_Hearing impaired========================
 def user_login_deaf():
     root = tk.Toplevel()
     root.title("AccessWord: user Login")
@@ -285,8 +292,6 @@ def user_login_deaf():
                            (USERNAME.get(), PASSWORD.get()))
             if cursor.fetchone() is not None:
                 HomeWindow()
-                USERNAME.set("")
-                PASSWORD.set("")
                 lbl_text.config(text="")
             else:
                 lbl_text.config(text="Invalid username or password", fg="red")
@@ -313,7 +318,11 @@ def user_login_deaf():
 
     def CloseLogin():
         Home.destroy()
-        keyboard()      # Change To User_Blind Frame!!!
+        global loguser
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = 'Hearing impaired'
+        keyboard()
 
     def user_Register_hearing():
         root.destroy()
@@ -390,8 +399,6 @@ def admin_login():
                            (USERNAME.get(), PASSWORD.get()))
             if cursor.fetchone() is not None:
                 HomeWindow()
-                USERNAME.set("")
-                PASSWORD.set("")
                 lbl_text.config(text="")
             else:
                 lbl_text.config(text="Invalid username or password", fg="red")
@@ -418,6 +425,10 @@ def admin_login():
 
     def CloseLogin():
         Home.destroy()
+        global loguser
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = 'admin'
         Admin_Frame()
     # ==============================FRAMES=========================================
     Top = Frame(root, bd=2, relief=RIDGE)
@@ -585,6 +596,17 @@ def Admin_Frame():
 
     Admin_Frame_Main()
 #========================End of Admin_Frame========================
+def OptionsKeyboard():
+    kb = tk.Toplevel()
+    kb.title("KeyBoard - Options")
+    width = 600
+    height = 600
+    screen_width = kb.winfo_screenwidth()
+    screen_height = kb.winfo_screenheight()
+    x = (screen_width / 2) - (width / 2)
+    y = (screen_height / 2) - (height / 2)
+    kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    kb.resizable(0, 0)
 
 def select(value):
     if value == "BACK":
@@ -602,18 +624,6 @@ def HosoPop(kb):
 
     varRow = 2
     varColumn = 0
-
-    def OptionsKeyboard():
-        kb = tk.Toplevel()
-        kb.title("KeyBoard - Options")
-        width = 600
-        height = 600
-        screen_width = kb.winfo_screenwidth()
-        screen_height = kb.winfo_screenheight()
-        x = (screen_width / 2) - (width / 2)
-        y = (screen_height / 2) - (height / 2)
-        kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
-        kb.resizable(0, 0)
 
     for button in buttons:
 
@@ -642,16 +652,16 @@ def HosoPop(kb):
             varColumn = 0
             varRow += 1
 
-
-
 def keyboard():
     kb = Toplevel()
-    kb.title("AccessWord")
+    kb.title("AccessWord: Keyboard")
     kb.resizable(0, 0)
    # kb.configure(bg='black')
     global entry
     entry = Entry(kb, width=128)
     entry.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
+    lbl_name = Label(kb, text="Hello " + loguser, font=('arial', 10), bd=15)
+    lbl_name.grid(row=0, column=16, sticky="e")
     # entry.pack()
     HosoPop(kb)
 
