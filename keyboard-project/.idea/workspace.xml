@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdminPassword.db" beforeDir="false" afterPath="$PROJECT_DIR$/AdminPassword.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accessWord" beforeDir="false" afterPath="$PROJECT_DIR$/accessWord" afterDir="false" />
-    </list>
+    <list default="true" id="4ada159f-2d1b-414b-b43b-269bc5a7d4c8" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +135,7 @@
       <workItem from="1578586427836" duration="8659000" />
       <workItem from="1578604488620" duration="354000" />
       <workItem from="1578726354714" duration="9328000" />
-      <workItem from="1578754123946" duration="9958000" />
+      <workItem from="1578754123946" duration="10016000" />
     </task>
     <servers />
   </component>
