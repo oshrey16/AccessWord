@@ -5,6 +5,7 @@ import sqlite3
 from tkinter import Listbox
 
 loguser=''
+logusertype=''
 # ====================================Register==========================================
 def user_Register(disability):
     root = tk.Toplevel()
@@ -640,9 +641,15 @@ def OptionsKeyboard():
         value = listbox_backcolor.get(ANCHOR)
         lbl_back_color1['text'] = value
 
+    """"
     def Save_Settings():
-        print('ok')
-
+        if(logusertype == 'visu'):
+            global conn, cursor
+            conn = sqlite3.connect("AdminPassword.db")
+            cursor = conn.cursor()
+            cursor.execute("UPDATE `User_Blind` SET `options` = ? WHERE `username`=?" , (lbl_window_size1,loguser))
+            conn.commit()
+    """
     def Report_TO_Admin():
         print('ok')
 
