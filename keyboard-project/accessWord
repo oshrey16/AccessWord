@@ -626,31 +626,51 @@ def OptionsKeyboard():
     lbl_back_color.grid(row=0, column=15, sticky="e")
 
     # ==============================ListBoxs=========================================
-    def CurSelet(evt):
-        value = str((listbox_window_size.get(ACTIVE)))
-        print (value)
+    #Get Selected Value From ListBox
+    def CurSelet1(evt):
+        value = listbox_window_size.get(ANCHOR)
+        lbl_window_size1['text'] = value
+    def CurSelet2(evt):
+        value = listbox_font.get(ANCHOR)
+        lbl_font1_size['text'] = value
+    def CurSelet3(evt):
+        value = listbox_font_color.get(ANCHOR)
+        lbl_font_color1['text'] = value
+    def CurSelet4(evt):
+        value = listbox_backcolor.get(ANCHOR)
+        lbl_back_color1['text'] = value
+
+    def Save_Settings():
+        print('ok')
+
+    def Report_TO_Admin():
+        print('ok')
+
     listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_window_size.pack(expand='yes', fill='both')
     listbox_window_size.place(relx=0.2, rely=0.32, anchor=CENTER)
-    listbox_window_size.insert('end', '500x300', '500x300','500x300','500x300','500x300')
-    listbox_window_size.bind('<<ListboxSelect>>', CurSelet)
+    listbox_window_size.insert('end', '500x300', '1200x700','500x300','500x300','500x300')
+    listbox_window_size.bind('<<ListboxSelect>>', CurSelet1)
     listbox_font = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font.pack(expand='yes', fill='both')
     listbox_font.place(relx=0.34, rely=0.32, anchor=CENTER)
     listbox_font.insert('end', '8', '10', '12', '14', '16', '20')
+    listbox_font.bind('<<ListboxSelect>>', CurSelet2)
     listbox_font_color = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font_color.pack(expand='yes', fill='both')
     listbox_font_color.place(relx=0.5, rely=0.32, anchor=CENTER)
     listbox_font_color.insert('end', 'black', 'red', 'blue', 'white', 'green')
+    listbox_font_color.bind('<<ListboxSelect>>', CurSelet3)
     listbox_backcolor = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_backcolor.pack(expand='yes', fill='both')
     listbox_backcolor.place(relx=0.65, rely=0.32, anchor=CENTER)
     listbox_backcolor.insert('end', 'black', 'red', 'blue', 'white', 'green')
+    listbox_backcolor.bind('<<ListboxSelect>>', CurSelet4)
 
     # ==============================LABELS Corrent Options=========================================
     Form1 = Frame(kb, height=200)
     Form1.pack(side=TOP, pady=0)
-    Form1.place(relx=0.1, rely=0.7)
+    Form1.place(relx=0.1, rely=0.6)
     lbl_cur_options = Label(Form1, text="Current options:", font=('arial', 16), bd=15)
     lbl_cur_options.grid(row=0, column=0, sticky="e", columnspan=15)
     lbl_window_size = Label(Form1, text="window size:", font=('arial', 14), bd=15)
@@ -664,12 +684,21 @@ def OptionsKeyboard():
 
     lbl_window_size1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_window_size1.grid(row=8, column=0, sticky="e")
-    lbl_font1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
-    lbl_font1.grid(row=8, column=4, sticky="e")
+    lbl_font1_size = Label(Form1, text="NULL", font=('arial', 14), bd=15)
+    lbl_font1_size.grid(row=8, column=4, sticky="e")
     lbl_font_color1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_font_color1.grid(row=8, column=10, sticky="e")
     lbl_back_color1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_back_color1.grid(row=8, column=15, sticky="e")
+
+    Form2 = Frame(kb, height=300)
+    Form2.pack(side=TOP, pady=0)
+    Form2.place(relx=0.3, rely=0.85)
+
+    btn_save = Button(Form2, text="Save Settings", width=35, command=Save_Settings)
+    btn_save.grid(pady=0, row=0, column=0)
+    btn_report = Button(Form2, text="Report Problem", width=15, command=Report_TO_Admin)
+    btn_report.grid(pady=0, row=0, column=0)
 
     global conn, cursor
     conn = sqlite3.connect("AdminPassword.db")
@@ -678,11 +707,13 @@ def OptionsKeyboard():
     record = cursor.fetchall()
     for row in record:
         if loguser == row[1]:
-            c_options = row[6]
-            d = eval(c_options)
-            d= dict(d)  #convert to dict
+            d = eval(row[6])
+            d = dict(d)  #convert to dict
             print(d['size'])
             lbl_window_size1['text'] = d['size']
+            lbl_font1_size['text'] = d['fontsize']
+            lbl_font_color1['text'] = d['fontcolor']
+            lbl_back_color1['text'] = d['backcolor']
             #lbl_window_size1.grid(text= c_options[0])
 
 def select(value):
