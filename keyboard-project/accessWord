@@ -38,6 +38,7 @@ def user_Register(disability):
         cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = 'admin' AND `password` = 'admin' AND `age` = 'admin' AND `email` = 'admin' AND `phone` = 'admin'")
 
     def Register(event=None):
+        global c_options
         Database()
         if USERNAME.get() == "" or PASSWORD.get() == "" or PASSWORD2.get() == "" or AGE.get() == "" or EMAIL.get() == "" or PHONE.get() == "":
             lbl_text.config(text="Please complete the required field!", fg="red")
@@ -56,7 +57,8 @@ def user_Register(disability):
                         PASSWORD2.set("")
                         found = True
                 if found == False:
-                    cursor.execute("INSERT INTO `User_Blind` (username, password, age, email, phone) VALUES (?,?,?,?,?)", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get()))
+                    c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white'} #defult options new user
+                    cursor.execute("INSERT INTO `User_Blind` (username, password, age, email, phone,options) VALUES (?,?,?,?,?,?)", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(), str(c_options)))
                     conn.commit()
                     HomeWindow()
 
@@ -72,7 +74,8 @@ def user_Register(disability):
                         PASSWORD2.set("")
                         found = True
                 if found == False:
-                    cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email, phone) VALUES (?,?,?,?,?)",(USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get()))
+                    c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white'}  # defult options new user
+                    cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email, phone, options) VALUES (?,?,?,?,?,?)",(USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(),str(c_options)))
                     conn.commit()
                     HomeWindow()
 
@@ -718,6 +721,8 @@ def OptionsKeyboard():
                     """, (str(c_options), loguser))
             conn.commit()
             conn.close()
+        kb.destroy()
+        keyboard()
 
     def Report_TO_Admin():
         print('ok')
@@ -725,7 +730,7 @@ def OptionsKeyboard():
     listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_window_size.pack(expand='yes', fill='both')
     listbox_window_size.place(relx=0.2, rely=0.32, anchor=CENTER)
-    listbox_window_size.insert('end', '500x300', '800x600','1024x600','1024x768','1152x864')
+    listbox_window_size.insert('end', '1100x200', '1100x400', '1100x600', '1200x700')
     listbox_window_size.bind('<<ListboxSelect>>', CurSelet1)
     listbox_font = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font.pack(expand='yes', fill='both')
@@ -816,29 +821,33 @@ def select(value):
     else:
         entry.insert(END, value)
 
-
 def HosoPop(kb):
-
+    def OptionsKeyboard_open():
+        kb.destroy()
+        OptionsKeyboard()
     varRow = 2
     varColumn = 0
+    font_color = c_options['fontcolor']
+    back_color = c_options['backcolor']
+    font_size = c_options['fontsize']
 
     for button in buttons:
 
         command = lambda x=button: select(x)
 
-        if button == "Space" :
+        if button == "Space":
             Button(kb, text=button, width=70, bg="#3c4987", fg="#ffffff",
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=10,
-                   pady=1, bd=2, command=lambda x=button: select(" ")).grid(row=5, column=0,columnspan = 11)
+                   pady=1, bd=2, command=lambda x=button: select(" ")).grid(row=5, column=0,columnspan= 11)
 
-        elif(button == "Options"):
+        elif button == "Options":
             Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
                     activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
-                    pady=1, bd=2, command=OptionsKeyboard).grid(row=2, column=16)
+                    pady=1, bd=2, command=OptionsKeyboard_open).grid(row=2, column=16)
         else:
-            Button(kb, text=button, width=5, bg="#3c4987", fg="#ffffff",
+            Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
-                   pady=4, bd=2, command=command).grid(row=varRow, column=varColumn)
+                   pady=4, bd=2, command=command,font=('ariel', font_size)).grid(row=varRow, column=varColumn)
 
         varColumn += 1
 
@@ -853,6 +862,22 @@ def keyboard():
     kb = Toplevel()
     kb.title("AccessWord: Keyboard")
     kb.resizable(0, 0)
+    xx = ""
+    xx = str(c_options['size']).split("x")
+    width = int(xx[0])
+    height = int(xx[1])
+    screen_width = kb.winfo_screenwidth()
+    screen_height = kb.winfo_screenheight()
+    x = (screen_width / 2) - (width / 2)
+    y = (screen_height / 2) - (height / 2)
+    font_size = c_options['fontsize']
+    if(int(font_size) == 14 or int(font_size) == 16):
+        width = 1200
+        height= 400
+    elif(int(font_size) > 16):
+        width = 1550
+        height = 600
+    kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
    # kb.configure(bg='black')
     global entry
     entry = Entry(kb, width=128)
