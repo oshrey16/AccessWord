@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import *
 import sqlite3
 from tkinter import Listbox
+from tkinter import colorchooser
 
 loguser=''
 logusertype=''
@@ -222,6 +223,17 @@ def user_login_blind():
         global logusertype
         loguser = USERNAME.get()
         logusertype = 'visually impaired'
+        global conn, cursor
+        conn = sqlite3.connect("AdminPassword.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM `User_Blind`")
+        record = cursor.fetchall()
+        for row in record:
+            if loguser == row[1]:
+                global c_options
+                d = eval(row[6])
+                d = dict(d)  # convert to dict
+                c_options = d
         keyboard()
 
     def user_Register_blind():
@@ -324,6 +336,17 @@ def user_login_deaf():
         global logusertype
         loguser = USERNAME.get()
         logusertype = 'Hearing impaired'
+        global conn, cursor
+        conn = sqlite3.connect("AdminPassword.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM `User_Blind`")
+        record = cursor.fetchall()
+        for row in record:
+            if loguser == row[1]:
+                global c_options
+                d = eval(row[6])
+                d = dict(d)  # convert to dict
+                c_options = d
         keyboard()
 
     def user_Register_hearing():
@@ -602,7 +625,7 @@ def OptionsKeyboard():
     kb = tk.Toplevel()
     kb.title("KeyBoard - Options")
     width = 780
-    height = 620
+    height = 720
     screen_width = kb.winfo_screenwidth()
     screen_height = kb.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
@@ -628,6 +651,19 @@ def OptionsKeyboard():
     lbl_back_color.grid(row=0, column=15, sticky="e")
 
     # ==============================ListBoxs=========================================
+    def call_me1():
+        nonlocal lbl_font_color1
+        clr = colorchooser.askcolor(title="select color")
+        lbl_font_color1['text'] = clr[1]
+        root.configure(background=clr[1])
+
+    def call_me2():
+        clr = colorchooser.askcolor(title="select color")
+        root.configure(background=clr[1])
+    button1 = Button(kb, text="change color", command=call_me1)
+    button1.pack()
+    button2 = Button(kb, text="change color", command=call_me2)
+    button2.pack()
     #Get Selected Value From ListBox
     def CurSelet1(evt):
         value = listbox_window_size.get(ANCHOR)
@@ -656,6 +692,15 @@ def OptionsKeyboard():
             SET options=?
             WHERE username=?
             """, (str(c_options), loguser))
+            conn.commit()
+            conn.close()
+        if (logusertype == 'Hearing impaired'):
+            conn = sqlite3.connect("AdminPassword.db")
+            cursor = conn.cursor()
+            cursor.execute("""UPDATE User_Deaf
+                    SET options=?
+                    WHERE username=?
+                    """, (str(c_options), loguser))
             conn.commit()
             conn.close()
 
@@ -691,31 +736,36 @@ def OptionsKeyboard():
     lbl_cur_options = Label(Form1, text="Current options:", font=('arial', 16), bd=15)
     lbl_cur_options.grid(row=0, column=0, sticky="e", columnspan=15)
     lbl_window_size = Label(Form1, text="window size:", font=('arial', 14), bd=15)
-    lbl_window_size.grid(row=5, column=0, sticky="e")
+    lbl_window_size.grid(row=4, column=0, sticky="e")
     lbl_font = Label(Form1, text="font size:", font=('arial', 14), bd=15)
-    lbl_font.grid(row=5, column=4, sticky="e")
+    lbl_font.grid(row=4, column=4, sticky="e")
     lbl_font_color = Label(Form1, text="font color:", font=('arial', 14), bd=15)
-    lbl_font_color.grid(row=5, column=10, sticky="e")
+    lbl_font_color.grid(row=4, column=10, sticky="e")
     lbl_back_color = Label(Form1, text="backcolor:", font=('arial', 14), bd=15)
-    lbl_back_color.grid(row=5, column=15, sticky="e")
+    lbl_back_color.grid(row=4, column=15, sticky="e")
+
 
     lbl_window_size1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_window_size1.grid(row=8, column=0, sticky="e")
     lbl_font1_size = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_font1_size.grid(row=8, column=4, sticky="e")
-    lbl_font_color1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
+    lbl_font_color1 = Label(Form1, text='#000000', font=('arial', 14), bd=15)
     lbl_font_color1.grid(row=8, column=10, sticky="e")
     lbl_back_color1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_back_color1.grid(row=8, column=15, sticky="e")
+
+    font_color_boxX = StringVar()
+    font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
+    font_color_box.grid(row=6, column=10, columnspan=3)
 
     Form2 = Frame(kb, height=300)
     Form2.pack(side=TOP, pady=0)
     Form2.place(relx=0.3, rely=0.85)
 
-    btn_save = Button(Form2, text="Save Settings", width=35, command=Save_Settings)
+    btn_save = Button(Form2, text="Save Settings", width=35, height=3, command=Save_Settings)
     btn_save.grid(pady=0, row=0, column=0)
     btn_report = Button(Form2, text="Report Problem", width=15, command=Report_TO_Admin)
-    btn_report.grid(pady=0, row=0, column=0)
+    btn_report.grid(pady=0, row=5, column=0)
 
     global conn, cursor
     conn = sqlite3.connect("AdminPassword.db")
