@@ -680,6 +680,8 @@ def OptionsKeyboard():
     def CurSelet2(evt):
         value = listbox_font.get(ANCHOR)
         lbl_font1_size['text'] = value
+        font_size_box.configure(font=('ariel', value))
+        font_size_box.grid(row=6, column=4, columnspan=3)
     def CurSelet3(evt):
         value = listbox_font_color.get(ANCHOR)
         lbl_font_color1['text'] = value
@@ -728,7 +730,7 @@ def OptionsKeyboard():
     listbox_font = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font.pack(expand='yes', fill='both')
     listbox_font.place(relx=0.34, rely=0.32, anchor=CENTER)
-    listbox_font.insert('end', '8', '10', '12', '14', '16', '20')
+    listbox_font.insert('end', '8', '10', '12', '14', '16', '20', '24', '28', '32')
     listbox_font.bind('<<ListboxSelect>>', CurSelet2)
     listbox_font_color = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font_color.pack(expand='yes', fill='both')
@@ -745,7 +747,7 @@ def OptionsKeyboard():
 
     Form1 = Frame(kb, height=200)
     Form1.pack(side=TOP, pady=0)
-    Form1.place(relx=0.1, rely=0.6)
+    Form1.place(relx=0.1, rely=0.55)
     lbl_cur_options = Label(Form1, text="Current options:", font=('arial', 16), bd=15)
     lbl_cur_options.grid(row=0, column=0, sticky="e", columnspan=15)
     lbl_window_size = Label(Form1, text="window size:", font=('arial', 14), bd=15)
@@ -792,6 +794,10 @@ def OptionsKeyboard():
             lbl_back_color1['text'] = d['backcolor']
 
     #######BOX COLOR INDICATION#######
+    font_size_boxX = StringVar()
+    font_size_box = Entry(Form1, textvariable=font_size_boxX, font=lbl_font1_size['text'], width=4)
+    font_size_box.grid(row=6, column=4, columnspan=3)
+    font_size_boxX.set('abc')
     font_color_boxX = StringVar()
     font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
     font_color_box.grid(row=6, column=10, columnspan=3)
