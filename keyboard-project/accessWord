@@ -653,13 +653,19 @@ def OptionsKeyboard():
     # ==============================ListBoxs=========================================
     def call_me1():
         nonlocal lbl_font_color1
+        nonlocal font_color_box
         clr = colorchooser.askcolor(title="select color - font color")
         lbl_font_color1['text'] = clr[1]
+        font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
+        font_color_box.grid(row=6, column=10, columnspan=3)
 
     def call_me2():
+        nonlocal back_color_box
         nonlocal lbl_back_color1
         clr = colorchooser.askcolor(title="select color - back color")
         lbl_back_color1['text'] = clr[1]
+        back_color_box = Entry(Form1, textvariable=back_color_boxX, font=(14), bg=lbl_back_color1['text'], width=4)
+        back_color_box.grid(row=6, column=15, columnspan=3)
 
     button1 = Button(kb, text="custom color", command=call_me1)
     button1.pack()
@@ -677,9 +683,13 @@ def OptionsKeyboard():
     def CurSelet3(evt):
         value = listbox_font_color.get(ANCHOR)
         lbl_font_color1['text'] = value
+        font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
+        font_color_box.grid(row=6, column=10, columnspan=3)
     def CurSelet4(evt):
         value = listbox_backcolor.get(ANCHOR)
         lbl_back_color1['text'] = value
+        back_color_box = Entry(Form1, textvariable=back_color_boxX, font=(14), bg=lbl_back_color1['text'], width=4)
+        back_color_box.grid(row=6, column=15, columnspan=3)
 
 
     def Save_Settings():
@@ -751,7 +761,7 @@ def OptionsKeyboard():
     lbl_window_size1.grid(row=8, column=0, sticky="e")
     lbl_font1_size = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_font1_size.grid(row=8, column=4, sticky="e")
-    lbl_font_color1 = Label(Form1, text='#000000', font=('arial', 14), bd=15)
+    lbl_font_color1 = Label(Form1, text='NULL', font=('arial', 14), bd=15)
     lbl_font_color1.grid(row=8, column=10, sticky="e")
     lbl_back_color1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_back_color1.grid(row=8, column=15, sticky="e")
@@ -781,9 +791,13 @@ def OptionsKeyboard():
             lbl_font_color1['text'] = d['fontcolor']
             lbl_back_color1['text'] = d['backcolor']
 
+    #######BOX COLOR INDICATION#######
     font_color_boxX = StringVar()
     font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
     font_color_box.grid(row=6, column=10, columnspan=3)
+    back_color_boxX = StringVar()
+    back_color_box = Entry(Form1, textvariable=back_color_boxX, font=(14), bg=lbl_back_color1['text'], width=4)
+    back_color_box.grid(row=6, column=15, columnspan=3)
 
 def select(value):
     if value == "BACK":
