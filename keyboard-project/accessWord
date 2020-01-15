@@ -653,17 +653,20 @@ def OptionsKeyboard():
     # ==============================ListBoxs=========================================
     def call_me1():
         nonlocal lbl_font_color1
-        clr = colorchooser.askcolor(title="select color")
+        clr = colorchooser.askcolor(title="select color - font color")
         lbl_font_color1['text'] = clr[1]
-        root.configure(background=clr[1])
 
     def call_me2():
-        clr = colorchooser.askcolor(title="select color")
-        root.configure(background=clr[1])
-    button1 = Button(kb, text="change color", command=call_me1)
+        nonlocal lbl_back_color1
+        clr = colorchooser.askcolor(title="select color - back color")
+        lbl_back_color1['text'] = clr[1]
+
+    button1 = Button(kb, text="custom color", command=call_me1)
     button1.pack()
-    button2 = Button(kb, text="change color", command=call_me2)
+    button1.place(relx=0.5, rely=0.5, anchor=CENTER)
+    button2 = Button(kb, text="custom color", command=call_me2)
     button2.pack()
+    button2.place(relx=0.65, rely=0.5, anchor=CENTER)
     #Get Selected Value From ListBox
     def CurSelet1(evt):
         value = listbox_window_size.get(ANCHOR)
@@ -710,7 +713,7 @@ def OptionsKeyboard():
     listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_window_size.pack(expand='yes', fill='both')
     listbox_window_size.place(relx=0.2, rely=0.32, anchor=CENTER)
-    listbox_window_size.insert('end', '500x300', '1200x700','500x300','500x300','500x300')
+    listbox_window_size.insert('end', '500x300', '800x600','1024x600','1024x768','1152x864')
     listbox_window_size.bind('<<ListboxSelect>>', CurSelet1)
     listbox_font = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_font.pack(expand='yes', fill='both')
@@ -744,7 +747,6 @@ def OptionsKeyboard():
     lbl_back_color = Label(Form1, text="backcolor:", font=('arial', 14), bd=15)
     lbl_back_color.grid(row=4, column=15, sticky="e")
 
-
     lbl_window_size1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_window_size1.grid(row=8, column=0, sticky="e")
     lbl_font1_size = Label(Form1, text="NULL", font=('arial', 14), bd=15)
@@ -753,10 +755,6 @@ def OptionsKeyboard():
     lbl_font_color1.grid(row=8, column=10, sticky="e")
     lbl_back_color1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
     lbl_back_color1.grid(row=8, column=15, sticky="e")
-
-    font_color_boxX = StringVar()
-    font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
-    font_color_box.grid(row=6, column=10, columnspan=3)
 
     Form2 = Frame(kb, height=300)
     Form2.pack(side=TOP, pady=0)
@@ -782,6 +780,10 @@ def OptionsKeyboard():
             lbl_font1_size['text'] = d['fontsize']
             lbl_font_color1['text'] = d['fontcolor']
             lbl_back_color1['text'] = d['backcolor']
+
+    font_color_boxX = StringVar()
+    font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
+    font_color_box.grid(row=6, column=10, columnspan=3)
 
 def select(value):
     if value == "BACK":
