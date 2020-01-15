@@ -454,9 +454,21 @@ def admin_login():
     def CloseLogin():
         Home.destroy()
         global loguser
+        global c_options
         global logusertype
         loguser = USERNAME.get()
         logusertype = 'admin'
+        global conn, cursor
+        conn = sqlite3.connect("AdminPassword.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM `Admin`")
+        record = cursor.fetchall()
+        for row in record:
+            if loguser == row[1]:
+                global c_options
+                d = eval(row[6])
+                d = dict(d)  # convert to dict
+                c_options = d
         Admin_Frame()
     # ==============================FRAMES=========================================
     Top = Frame(root, bd=2, relief=RIDGE)
