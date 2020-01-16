@@ -61,8 +61,8 @@ def user_Register(disability):
                         PASSWORD2.set("")
                         found = True
                 if found == False:
-                    c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white'} #defult options new user
-                    cursor.execute("INSERT INTO `User_Blind` (username, password, age, email, phone,options) VALUES (?,?,?,?,?,?)", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(), str(c_options)))
+                    c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white', 'autosize': 1} #defult options new user
+                    cursor.execute("INSERT INTO `User_Blind` (username, password, age, email, phone, options, autosize) VALUES (?,?,?,?,?,?)", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(), str(c_options)))
                     conn.commit()
                     HomeWindow()
 
@@ -78,7 +78,7 @@ def user_Register(disability):
                         PASSWORD2.set("")
                         found = True
                 if found == False:
-                    c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white'}  # defult options new user
+                    c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white', 'autosize': 1}  # defult options new user
                     cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email, phone, options) VALUES (?,?,?,?,?,?)",(USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(),str(c_options)))
                     conn.commit()
                     HomeWindow()
@@ -713,11 +713,42 @@ def OptionsKeyboard():
         back_color_box.grid(row=6, column=15, columnspan=3)
 
 
+    def Pre_Save_Settings():
+        Home = Toplevel()
+        Home.title("AccessWord: User Login")
+        width = 400
+        height = 100
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.resizable(0, 0)
+        Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        save_c_options = c_options
+        def NO_Save_Settings():
+            Home.destroy()
+            c_options = save_c_options
+            kb1.destroy()
+        def Yes_Save_Settings():
+            Home.destroy()
+            kb1.destroy()
+            Save_Settings()
+        lbl_home = Label(Home, text="Are you sure?", font=('times new roman', 20)).pack()
+        btn_save = Button(Home, text='SAVE!', command=Yes_Save_Settings).pack()
+        btn_notsave = Button(Home, text='NO!!!', command=NO_Save_Settings).pack()
+        c_options['size'] = lbl_window_size1['text']
+        c_options['fontsize'] = lbl_font1_size['text']
+        c_options['fontcolor'] = lbl_font_color1['text']
+        c_options['backcolor'] = lbl_back_color1['text']
+        c_options['autosize'] = Auto_size.get()
+        keyboard()
+
     def Save_Settings():
         c_options['size'] = lbl_window_size1['text']
         c_options['fontsize'] = lbl_font1_size['text']
         c_options['fontcolor'] = lbl_font_color1['text']
         c_options['backcolor'] = lbl_back_color1['text']
+        c_options['autosize'] = Auto_size.get()
         if(logusertype == 'visually impaired'):
             global conn, cursor
             conn = sqlite3.connect("AdminPassword.db")
@@ -737,6 +768,9 @@ def OptionsKeyboard():
                     """, (str(c_options), loguser))
             conn.commit()
             conn.close()
+        kb.destroy()
+        keyboard()
+    def Back_To_Keyboard():
         kb.destroy()
         keyboard()
 
@@ -809,6 +843,11 @@ def OptionsKeyboard():
     listbox_backcolor.insert('end', 'black', 'red', 'blue', 'white', 'green')
     listbox_backcolor.bind('<<ListboxSelect>>', CurSelet4)
 
+    Auto_size = IntVar()
+    auto_size = Checkbutton(kb, text="Auto Size", variable=Auto_size)
+    auto_size.pack()
+    auto_size.place(relx=0.2, rely=0.45, anchor=CENTER)
+
     # ==============================LABELS Corrent Options=========================================
 
     Form1 = Frame(kb, height=200)
@@ -838,11 +877,14 @@ def OptionsKeyboard():
     Form2.pack(side=TOP, pady=0)
     Form2.place(relx=0.3, rely=0.85)
 
-    btn_save = Button(Form2, text="Save Settings", width=35, height=3, command=Save_Settings)
+    btn_save = Button(Form2, text="Save Settings", width=35, height=3, command=Pre_Save_Settings)
     btn_save.grid(pady=0, row=0, column=0)
     btn_report = Button(Form2, text="Report Problem", width=15, command=Report_TO_Admin)
     btn_report.grid(pady=0, row=5, column=0)
+    btn_report = Button(Form2, text="BACK", width=15, command=Back_To_Keyboard)
+    btn_report.grid(pady=0, row=5, column=7)
 
+    #####LOAD OPTION FOR USER
     global conn, cursor
     conn = sqlite3.connect("AdminPassword.db")
     cursor = conn.cursor()
@@ -853,12 +895,12 @@ def OptionsKeyboard():
             global c_options
             d = eval(row[6])
             d = dict(d)  #convert to dict
-            print(d)
             c_options = d
             lbl_window_size1['text'] = d['size']
             lbl_font1_size['text'] = d['fontsize']
             lbl_font_color1['text'] = d['fontcolor']
             lbl_back_color1['text'] = d['backcolor']
+            Auto_size.set(d['autosize'])
 
     #######BOX COLOR INDICATION#######
     font_size_boxX = StringVar()
@@ -890,7 +932,7 @@ def HosoPop(kb,entry):
     def Copy_Text():
         pyperclip.copy(entry.get())     #Copy to clipboard
     def Clear():
-        entry.delete('0','end')
+        entry.delete('0', 'end')
 
     varRow = 2
     varColumn = 0
@@ -970,50 +1012,53 @@ def HosoPop(kb,entry):
 def keyboard():
     global k_width
     global k_height
-    kb = Toplevel()
-    kb.title("AccessWord: Keyboard")
-    kb.resizable(0, 0)
+    global kb1
+    kb1 = Toplevel()
+    kb1.title("AccessWord: Keyboard")
+    kb1.resizable(0, 0)
     xx = ""
     xx = str(c_options['size']).split("x")
     width = int(xx[0])
     height = int(xx[1])
-    screen_width = kb.winfo_screenwidth()
-    screen_height = kb.winfo_screenheight()
+    screen_width = kb1.winfo_screenwidth()
+    screen_height = kb1.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
     y = (screen_height / 2) - (height / 2)
     font_size = c_options['fontsize']
-    if int(font_size) == 14:
-        width = 1220
-        height= 240
-    elif(int(font_size) == 16):
-        width = 1320
-        height = 250
-    elif (int(font_size) == 18):
-        width = 1450
-        height = 250
-    elif (int(font_size) == 20):
-        width = 1440
-        height = 370
-    elif (int(font_size) == 24):
-        width = 1360
-        height = 540
-    elif (int(font_size) == 28):
-        width = 1460
-        height = 540
-    elif (int(font_size) == 32):
-        width = 1500
-        height = 630
+    auto_size = c_options['autosize']
+    if (auto_size == 1):
+        if int(font_size) == 14:
+            width = 1220
+            height= 240
+        elif(int(font_size) == 16):
+            width = 1320
+            height = 250
+        elif (int(font_size) == 18):
+            width = 1450
+            height = 250
+        elif (int(font_size) == 20):
+            width = 1440
+            height = 370
+        elif (int(font_size) == 24):
+            width = 1360
+            height = 540
+        elif (int(font_size) == 28):
+            width = 1460
+            height = 540
+        elif (int(font_size) == 32):
+            width = 1500
+            height = 630
     k_width = width
     k_height = height
-    kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    kb1.geometry("%dx%d+%d+%d" % (width, height, x, y))
    # kb.configure(bg='black')
     global entry
-    entry = Entry(kb, width=128)
+    entry = Entry(kb1, width=128)
     entry.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
-    lbl_name = Label(kb, text="Hello " + loguser, font=('arial', font_size), bd=15)
+    lbl_name = Label(kb1, text="Hello " + loguser, font=('arial', font_size), bd=15)
     lbl_name.grid(row=0, column=16, sticky="e")
     # entry.pack()
-    HosoPop(kb,entry)
+    HosoPop(kb1, entry)
 
 
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
@@ -1038,6 +1083,7 @@ button2.place(relx=0.7, rely=0.6, anchor=CENTER)
 button3 = Button(root, text="visually impaired", command=user_login_blind)
 button3.pack()
 button3.place(relx=0.3, rely=0.6, anchor=CENTER)
+
 
 root.geometry("500x300+120+120")
 root.mainloop()
