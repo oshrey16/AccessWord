@@ -892,12 +892,24 @@ def HosoPop(kb):
     back_color = c_options['backcolor']
     font_size = int(c_options['fontsize'])
     row_space = 5
+    space_span =11
+    font_size_space = font_size
+    font_size_options = font_size
     if(font_size>=20):
         global buttons
         row_space = 8
         buttons = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
                     'z', 'x', 'c', 'v', 'b', 'n', 'm', '<-', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Options']
+                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Options','Copy Text']
+        if font_size >=24:
+            space_span = 8
+            font_size_space = 20
+            font_size_options = 20
+            if font_size == 28:
+                space_span = 10
+            if font_size == 32:
+                space_span = 8
+
     for button in buttons:
 
         command = lambda x=button: select(x)
@@ -905,12 +917,16 @@ def HosoPop(kb):
         if button == "Space":
             Button(kb, text=button, width=70, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=10,
-                   pady=1, bd=2, font=('ariel', font_size), command=lambda x=button: select(" ")).grid(row=row_space, column=0,columnspan= 11)
+                   pady=1, bd=2, font=('ariel', font_size_space), command=lambda x=button: select(" ")).grid(row=row_space, column=0, columnspan=space_span)
 
         elif button == "Options":
             Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
                     activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
-                    pady=1, bd=2, font=('ariel', font_size), command=OptionsKeyboard_open).grid(row=2, column=16)
+                    pady=1, bd=2, font=('ariel', font_size_options), command=OptionsKeyboard_open).grid(row=3, column=16)
+        elif button == "Copy Text":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=OptionsKeyboard_open).grid(row=2, column=16)
         else:
             Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
@@ -918,12 +934,20 @@ def HosoPop(kb):
 
         varColumn += 1
 
-        if font_size >= 20 and font_size<28:
-            if varColumn > 12:
+        if font_size == 20:
+            if varColumn > 11:
                 varColumn = 0
                 varRow += 1
-        elif font_size >=28:
+        elif font_size == 24:
+            if varColumn > 7:
+                varColumn = 0
+                varRow += 1
+        elif font_size == 28:
             if varColumn > 9:
+                varColumn = 0
+                varRow += 1
+        elif font_size == 32:
+            if varColumn > 8:
                 varColumn = 0
                 varRow += 1
         else:
@@ -960,11 +984,17 @@ def keyboard():
         width = 1450
         height = 250
     elif (int(font_size) == 20):
-        width = 1530
-        height = 360
-    elif (int(font_size) >= 22):
+        width = 1440
+        height = 370
+    elif (int(font_size) == 24):
+        width = 1360
+        height = 540
+    elif (int(font_size) == 28):
+        width = 1460
+        height = 540
+    elif (int(font_size) == 32):
         width = 1500
-        height = 500
+        height = 630
     k_width = width
     k_height = height
     kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
@@ -972,7 +1002,7 @@ def keyboard():
     global entry
     entry = Entry(kb, width=128)
     entry.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
-    lbl_name = Label(kb, text="Hello " + loguser, font=('arial', 10), bd=15)
+    lbl_name = Label(kb, text="Hello " + loguser, font=('arial', font_size), bd=15)
     lbl_name.grid(row=0, column=16, sticky="e")
     # entry.pack()
     HosoPop(kb)
@@ -981,7 +1011,7 @@ def keyboard():
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
            'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
            'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
-           'Space' , 'Options']
+           'Space' , 'Options', 'Copy Text']
 
 # Main Window #
 root = Tk()
