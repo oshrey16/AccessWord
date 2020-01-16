@@ -775,6 +775,8 @@ def OptionsKeyboard():
         keyboard()
 
     def Report_TO_Admin():
+        def Send_Report():
+            print("S")
         root = tk.Toplevel()
         root.title("AccessWord: Report Problem")
         width = 550
@@ -805,9 +807,11 @@ def OptionsKeyboard():
         lbl_password.grid(row=1, sticky="e")
         lbl_password2 = Label(Form, text="Messege:", font=('arial', 14), bd=15)
         lbl_password2.grid(row=2, sticky="e")
+        #entryy = Entry(root, width=128)
+        #entryy.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
 
-        global date
-        today = date.today()
+        #global date
+        #today = date.today()
         # dd/mm/YY
         d1 = today.strftime("%d/%m/%Y")
 
@@ -817,10 +821,16 @@ def OptionsKeyboard():
         date = Entry(Form, textvariable=DATE, font=(14), state=DISABLED)
         date.grid(row=1, column=1)
         DATE.set(d1)
-        mess = Entry(Form, textvariable=MESSAGE, font=(14))
-        mess.grid(row=2, column=1)
-        mess.config(width=30)
-        mess.config(height=30)
+        entryy = Entry(Form, width=128)
+        entryy.grid(rowspan=8, columnspan=15, ipadx=100, ipady=20)
+
+        open_keyboard = Button(Form, text="Open Keyboard", width=30, command=keyboard)
+        open_keyboard.grid(pady=25, row=14, columnspan=2)
+        open_keyboard.bind('<Return>', Send_Report)
+        btn_send = Button(Form, text="Send Report", width=45, command=Send_Report)
+        btn_send.grid(pady=25, row=11, columnspan=2)
+        btn_send.bind('<Return>', Send_Report)
+
 
     listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
     listbox_window_size.pack(expand='yes', fill='both')
@@ -1070,6 +1080,9 @@ buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
 # Main Window #
 root = Tk()
 root.title("AccessWord")
+global date
+global today
+today = date.today()
 l = Label(root, text="!שלום")
 l.place(relx=0.45, rely=0.1)
 l = Label(root, text=":אנא בחר את סוג המקלדת הרצויה")
