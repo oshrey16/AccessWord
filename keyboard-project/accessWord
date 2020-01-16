@@ -888,7 +888,9 @@ def HosoPop(kb,entry):
         kb.destroy()
         OptionsKeyboard()
     def Copy_Text():
-        print(entry.get())
+        pyperclip.copy(entry.get())     #Copy to clipboard
+    def Clear():
+        entry.delete('0','end')
 
     varRow = 2
     varColumn = 0
@@ -904,7 +906,7 @@ def HosoPop(kb,entry):
         row_space = 8
         buttons = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
                     'z', 'x', 'c', 'v', 'b', 'n', 'm', '<-', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Options','Copy Text']
+                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Clear', 'Copy Text', 'Options']
         if font_size >=24:
             space_span = 8
             font_size_space = 20
@@ -922,15 +924,18 @@ def HosoPop(kb,entry):
             Button(kb, text=button, width=70, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=10,
                    pady=1, bd=2, font=('ariel', font_size_space), command=lambda x=button: select(" ")).grid(row=row_space, column=0, columnspan=space_span)
-
-        elif button == "Options":
-            Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
-                    activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
-                    pady=1, bd=2, font=('ariel', font_size_options), command=OptionsKeyboard_open).grid(row=3, column=16)
         elif button == "Copy Text":
             Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
                    activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
                    pady=1, bd=2, font=('ariel', font_size_options), command=Copy_Text).grid(row=2, column=16)
+        elif button == "Clear":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Clear).grid(row=3, column=16)
+        elif button == "Options":
+            Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
+                    activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                    pady=1, bd=2, font=('ariel', font_size_options), command=OptionsKeyboard_open).grid(row=4, column=16)
         else:
             Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
@@ -1014,7 +1019,7 @@ def keyboard():
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
            'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
            'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
-           'Space' , 'Options', 'Copy Text']
+           'Space', 'Clear', 'Copy Text', 'Options']
 
 
 # Main Window #
