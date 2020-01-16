@@ -5,6 +5,7 @@ import sqlite3
 from tkinter import Listbox
 from tkinter import colorchooser
 from datetime import date
+import pyperclip
 
 loguser=''
 logusertype=''
@@ -882,17 +883,20 @@ def select(value):
     else:
         entry.insert(END, value)
 
-def HosoPop(kb):
+def HosoPop(kb,entry):
     def OptionsKeyboard_open():
         kb.destroy()
         OptionsKeyboard()
+    def Copy_Text():
+        print(entry.get())
+
     varRow = 2
     varColumn = 0
     font_color = c_options['fontcolor']
     back_color = c_options['backcolor']
     font_size = int(c_options['fontsize'])
     row_space = 5
-    space_span =11
+    space_span = 11
     font_size_space = font_size
     font_size_options = font_size
     if(font_size>=20):
@@ -926,7 +930,7 @@ def HosoPop(kb):
         elif button == "Copy Text":
             Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
                    activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
-                   pady=1, bd=2, font=('ariel', font_size_options), command=OptionsKeyboard_open).grid(row=2, column=16)
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Copy_Text).grid(row=2, column=16)
         else:
             Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
@@ -957,7 +961,6 @@ def HosoPop(kb):
             if varColumn > 14 and varRow == 3:
                 varColumn = 0
                 varRow += 1
-
 
 def keyboard():
     global k_width
@@ -1005,13 +1008,14 @@ def keyboard():
     lbl_name = Label(kb, text="Hello " + loguser, font=('arial', font_size), bd=15)
     lbl_name.grid(row=0, column=16, sticky="e")
     # entry.pack()
-    HosoPop(kb)
+    HosoPop(kb,entry)
 
 
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
            'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
            'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
            'Space' , 'Options', 'Copy Text']
+
 
 # Main Window #
 root = Tk()
