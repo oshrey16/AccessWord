@@ -12,6 +12,7 @@ from gtts import gTTS
 from pygame import mixer
 from datetime import datetime
 import speech_recognition as sr
+from PIL import ImageTk, Image
 
 
 loguser=''
@@ -1175,21 +1176,18 @@ if(current_time >= 12 and current_time <= 17):
 elif(current_time >= 18 and current_time <= 21):
     hellotext = "Hello and good evening. Welcome To Access Word. Please Select User"
 elif(current_time >= 22 and current_time <= 23 or current_time>=0 and current_time <=5):
-    hellotext = "Hello and good night. Welcome To Access Word. Please Select User"
+    hellotext = "Hello and good night . Welcome To Access Word. Please Select User"
 elif(current_time >= 6 and current_time <= 11):
     hellotext = "Hello and good morning. Welcome To Access Word. Please Select User"
 mixer.init()
-mixer.music.load("good.mp3")
+mixer.music.load('good.mp3')
 language = 'en'
 myobj = gTTS(text=hellotext, lang=language, slow=False)
 myobj.save('good1.mp3')
 mixer.init()
 mixer.music.load("good1.mp3")
 mixer.music.play()
-l = Label(root, text="!שלום")
-l.place(relx=0.45, rely=0.1)
-l = Label(root, text=":אנא בחר את סוג המקלדת הרצויה")
-l.place(relx=0.3, rely=0.25)
+
 button1 = Button(root, text="Admin", command=admin_login)
 button1.pack()
 button1.place(relx=0.5, rely=0.6, anchor=CENTER)
@@ -1200,6 +1198,10 @@ button3 = Button(root, text="visually impaired", command=user_login_blind)
 button3.pack()
 button3.place(relx=0.3, rely=0.6, anchor=CENTER)
 
+img = ImageTk.PhotoImage(Image.open("abc.png"))
+panel = Label(root, image=img)
+panel.pack(side = "bottom", fill = "both", expand = "yes")
+panel.place(relx=0.5, rely=0.2, anchor=CENTER)
 
 def on_closing():
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
