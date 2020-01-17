@@ -7,6 +7,9 @@ from tkinter import Listbox
 from tkinter import colorchooser
 from datetime import date
 import pyperclip
+from gtts import gTTS
+import os
+from pygame
 
 loguser=''
 logusertype=''
@@ -983,6 +986,13 @@ def HosoPop(kb,entry):
     def Clear():
         entry.delete('0', 'end')
 
+    def Read_Text():
+        text_to_read = entry.get()
+        language = 'en'
+        myobj = gTTS(text=text_to_read, lang=language, slow=False)
+        myobj.save("read.mp3")
+        os.system("mpg321 read.mp3")
+
     varRow = 2
     varColumn = 0
     font_color = c_options['fontcolor']
@@ -997,7 +1007,7 @@ def HosoPop(kb,entry):
         row_space = 8
         buttons = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
                     'z', 'x', 'c', 'v', 'b', 'n', 'm', '<-', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Clear', 'Copy Text', 'Options']
+                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Clear', 'Copy Text', 'Options', 'Read Text']
         if font_size >=24:
             space_span = 8
             font_size_space = 20
@@ -1027,6 +1037,10 @@ def HosoPop(kb,entry):
             Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
                     activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
                     pady=1, bd=2, font=('ariel', font_size_options), command=(lambda: OptionsKeyboard_open() if option_opeded==False else messagebox.showerror('Error', 'ERROR- Options opened!'))).grid(row=4, column=16)
+        elif button == "Read Text":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Read_Text).grid(row=5, column=16)
         else:
             Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
@@ -1113,7 +1127,7 @@ def keyboard():
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
            'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
            'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
-           'Space', 'Clear', 'Copy Text', 'Options']
+           'Space', 'Clear', 'Copy Text', 'Options', 'Read Text']
 
 
 # Main Window #
