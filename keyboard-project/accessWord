@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import os
 from tkinter import *
 from tkinter import messagebox
 import sqlite3
@@ -8,8 +9,9 @@ from tkinter import colorchooser
 from datetime import date
 import pyperclip
 from gtts import gTTS
-import os
-from pygame
+from pygame import mixer
+from datetime import datetime
+
 
 loguser=''
 logusertype=''
@@ -987,11 +989,14 @@ def HosoPop(kb,entry):
         entry.delete('0', 'end')
 
     def Read_Text():
+        mixer.init()
+        mixer.music.load("good.mp3")
         text_to_read = entry.get()
         language = 'en'
         myobj = gTTS(text=text_to_read, lang=language, slow=False)
-        myobj.save("read.mp3")
-        os.system("mpg321 read.mp3")
+        myobj.save('good1.mp3')
+        mixer.music.load("good1.mp3")
+        mixer.music.play()
 
     varRow = 2
     varColumn = 0
@@ -1076,6 +1081,16 @@ def keyboard():
     global k_width
     global k_height
     global kb1
+    #say hello to user
+    if option_opeded==False:
+        mixer.init()
+        mixer.music.load("good.mp3")
+        language = 'en'
+        myobj = gTTS(text="Hello " + loguser + " Welcome Back", lang=language, slow=False)
+        myobj.save('good1.mp3')
+        mixer.music.load("good1.mp3")
+        mixer.music.play()
+
     kb1 = Toplevel()
     kb1.title("AccessWord: Keyboard")
     kb1.resizable(0, 0)
@@ -1135,7 +1150,17 @@ root = Tk()
 root.title("AccessWord")
 global date
 global today
-today = date.today()
+today = date.today()    #GET DATE
+now = datetime.now()    #GET TIME
+current_time = now.strftime("%H")
+mixer.init()
+mixer.music.load("good.mp3")
+language = 'en'
+myobj = gTTS(text="Hello Please Select User", lang=language, slow=False)
+myobj.save('good1.mp3')
+mixer.init()
+mixer.music.load("good1.mp3")
+mixer.music.play()
 l = Label(root, text="!שלום")
 l.place(relx=0.45, rely=0.1)
 l = Label(root, text=":אנא בחר את סוג המקלדת הרצויה")
