@@ -11,6 +11,7 @@ import pyperclip
 from gtts import gTTS
 from pygame import mixer
 from datetime import datetime
+import speech_recognition as sr
 
 
 loguser=''
@@ -998,6 +999,15 @@ def HosoPop(kb,entry):
         mixer.music.load("good1.mp3")
         mixer.music.play()
 
+    def Speak_Text():
+
+        r1 = sr.Recognizer()
+        r2 = sr.Recognizer()
+        with sr.Microphone() as source:
+            audio = r1.listen(source)
+        the_out = r2.recognize_google(audio)
+        #print(the_out)
+
     varRow = 2
     varColumn = 0
     font_color = c_options['fontcolor']
@@ -1012,7 +1022,7 @@ def HosoPop(kb,entry):
         row_space = 8
         buttons = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
                     'z', 'x', 'c', 'v', 'b', 'n', 'm', '<-', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Clear', 'Copy Text', 'Options', 'Read Text']
+                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Clear', 'Copy Text', 'Options', 'Read Text', 'Speak']
         if font_size >=24:
             space_span = 8
             font_size_space = 20
@@ -1046,6 +1056,10 @@ def HosoPop(kb,entry):
             Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
                    activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
                    pady=1, bd=2, font=('ariel', font_size_options), command=Read_Text).grid(row=5, column=16)
+        elif button == "Speak":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Speak_Text).grid(row=1, column=16)
         else:
             Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
@@ -1086,7 +1100,7 @@ def keyboard():
         mixer.init()
         mixer.music.load("good.mp3")
         language = 'en'
-        myobj = gTTS(text="Hi " + loguser + " ", lang=language, slow=False)
+        myobj = gTTS(text="Hi " + loguser + " Lets start!", lang=language, slow=False)
         myobj.save('good1.mp3')
         mixer.music.load("good1.mp3")
         mixer.music.play()
@@ -1105,27 +1119,30 @@ def keyboard():
     font_size = c_options['fontsize']
     auto_size = c_options['autosize']
     if (auto_size == 1):
-        if int(font_size) == 14:
-            width = 1220
+        if int(font_size) < 14:
+            width = 1100
             height= 240
+        elif int(font_size) == 14:
+            width = 1220
+            height= 270
         elif(int(font_size) == 16):
             width = 1320
-            height = 250
+            height = 290
         elif (int(font_size) == 18):
             width = 1450
-            height = 250
+            height = 330
         elif (int(font_size) == 20):
             width = 1440
-            height = 370
+            height = 420
         elif (int(font_size) == 24):
             width = 1360
-            height = 540
+            height = 600
         elif (int(font_size) == 28):
             width = 1460
-            height = 540
+            height = 600
         elif (int(font_size) == 32):
             width = 1500
-            height = 630
+            height = 680
     k_width = width
     k_height = height
     kb1.geometry("%dx%d+%d+%d" % (width, height, x, y))
@@ -1142,7 +1159,7 @@ def keyboard():
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
            'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
            'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
-           'Space', 'Clear', 'Copy Text', 'Options', 'Read Text']
+           'Space', 'Clear', 'Copy Text', 'Options', 'Read Text', 'Speak']
 
 
 # Main Window #
