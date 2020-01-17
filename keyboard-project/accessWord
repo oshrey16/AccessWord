@@ -1086,7 +1086,7 @@ def keyboard():
         mixer.init()
         mixer.music.load("good.mp3")
         language = 'en'
-        myobj = gTTS(text="Hello " + loguser + " Welcome Back", lang=language, slow=False)
+        myobj = gTTS(text="Hi " + loguser + " ", lang=language, slow=False)
         myobj.save('good1.mp3')
         mixer.music.load("good1.mp3")
         mixer.music.play()
@@ -1152,11 +1152,19 @@ global date
 global today
 today = date.today()    #GET DATE
 now = datetime.now()    #GET TIME
-current_time = now.strftime("%H")
+current_time = int(now.strftime("%H"))
+if(current_time >= 12 and current_time <= 17):
+    hellotext = "Hello and good afternoon. Welcome To Access Word. Please Select User"
+elif(current_time >= 18 and current_time <= 21):
+    hellotext = "Hello and good evening. Welcome To Access Word. Please Select User"
+elif(current_time >= 22 and current_time <= 23 or current_time>=0 and current_time <=5):
+    hellotext = "Hello and good night. Welcome To Access Word. Please Select User"
+elif(current_time >= 6 and current_time <= 11):
+    hellotext = "Hello and good morning. Welcome To Access Word. Please Select User"
 mixer.init()
 mixer.music.load("good.mp3")
 language = 'en'
-myobj = gTTS(text="Hello Please Select User", lang=language, slow=False)
+myobj = gTTS(text=hellotext, lang=language, slow=False)
 myobj.save('good1.mp3')
 mixer.init()
 mixer.music.load("good1.mp3")
