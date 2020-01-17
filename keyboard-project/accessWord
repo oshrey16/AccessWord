@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *
+from tkinter import messagebox
 import sqlite3
 from tkinter import Listbox
 from tkinter import colorchooser
@@ -12,6 +13,7 @@ logusertype=''
 c_options = dict()
 k_width = 0
 k_height = 0
+option_opeded = False
 # ====================================Register==========================================
 def user_Register(disability):
     root = tk.Toplevel()
@@ -601,8 +603,14 @@ def Admin_Frame():
         listbox.place(relx=0.5, rely=0.5, anchor=CENTER)
         scrollbar.config(command=listbox.yview)
         scrollbar.pack(side="right", fill="y")
-        listbox.insert('end',
-                       '{:20s}|{:60s}|{:15s}'.format(('UserName'), ('Report'), ('Date Of Report')))
+        listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(('UserName'), ('Report'), ('Date Of Report')))
+        conn = sqlite3.connect("AdminPassword.db")
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM `User_Blind`")
+        record = cur.fetchall()
+        for row in record:
+            listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(row[1], row[2], row[3]))
+        conn.close()
 
     def Show_contact():
         root = tk.Toplevel()
@@ -641,6 +649,7 @@ def Admin_Frame():
     Admin_Frame_Main()
 #========================End of Admin_Frame========================
 def OptionsKeyboard():
+    global option_opeded
     kb = tk.Toplevel()
     kb.title("KeyBoard - Options")
     width = 780
@@ -651,6 +660,16 @@ def OptionsKeyboard():
     y = (screen_height / 2) - (height / 2)
     kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
     kb.resizable(0, 0)
+    option_opeded = True
+
+    def on_closing():
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            global option_opeded
+            option_opeded = False
+            kb.destroy()
+            keyboard()
+
+    kb.protocol("WM_DELETE_WINDOW", on_closing)
     # ==============================FRAMES=========================================
     Top = Frame(kb, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
@@ -771,12 +790,29 @@ def OptionsKeyboard():
         kb.destroy()
         keyboard()
     def Back_To_Keyboard():
+        global option_opeded
+        option_opeded = False
         kb.destroy()
         keyboard()
 
     def Report_TO_Admin():
         def Send_Report():
-            print("S")
+            def Send_ok():
+                root.destroy()
+
+            global conn, cursor
+            conn = sqlite3.connect("AdminPassword.db")
+            cursor = conn.cursor()
+            print(len(entryy.get()))
+            if(len(entryy.get()) > 3):
+                cursor.execute("INSERT INTO `Reports` (username, date, text_report) VALUES (?,?,?)",(USERNAME.get(), DATE.get(), entryy.get()))
+                conn.commit()
+                conn.close()
+                Send_ok()
+            else:
+                lbl_text.config(text="Please Write The Report!", fg="red")
+
+
         root = tk.Toplevel()
         root.title("AccessWord: Report Problem")
         width = 550
@@ -790,7 +826,6 @@ def OptionsKeyboard():
 
         USERNAME = StringVar()
         DATE = StringVar()
-        MESSAGE = StringVar()
 
         # ==============================FRAMES=========================================
         Top = Frame(root, bd=2, relief=RIDGE)
@@ -807,11 +842,6 @@ def OptionsKeyboard():
         lbl_password.grid(row=1, sticky="e")
         lbl_password2 = Label(Form, text="Messege:", font=('arial', 14), bd=15)
         lbl_password2.grid(row=2, sticky="e")
-        #entryy = Entry(root, width=128)
-        #entryy.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
-
-        #global date
-        #today = date.today()
         # dd/mm/YY
         d1 = today.strftime("%d/%m/%Y")
 
@@ -826,10 +856,12 @@ def OptionsKeyboard():
 
         open_keyboard = Button(Form, text="Open Keyboard", width=30, command=keyboard)
         open_keyboard.grid(pady=25, row=14, columnspan=2)
-        open_keyboard.bind('<Return>', Send_Report)
+        open_keyboard.bind('<Return>', keyboard)
         btn_send = Button(Form, text="Send Report", width=45, command=Send_Report)
         btn_send.grid(pady=25, row=11, columnspan=2)
         btn_send.bind('<Return>', Send_Report)
+        lbl_text = Label(Form)
+        lbl_text.grid(row=12, columnspan=2)
 
 
     listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
@@ -898,7 +930,12 @@ def OptionsKeyboard():
     global conn, cursor
     conn = sqlite3.connect("AdminPassword.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM `User_Blind`")
+    if (logusertype == 'visually impaired'):
+        cursor.execute("SELECT * FROM `User_Blind`")
+    elif (logusertype == 'Hearing impaired'):
+        cursor.execute("SELECT * FROM `User_Deaf`")
+    else:
+        cursor.execute("SELECT * FROM `Admin`")
     record = cursor.fetchall()
     for row in record:
         if loguser == row[1]:
@@ -987,7 +1024,7 @@ def HosoPop(kb,entry):
         elif button == "Options":
             Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
                     activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
-                    pady=1, bd=2, font=('ariel', font_size_options), command=OptionsKeyboard_open).grid(row=4, column=16)
+                    pady=1, bd=2, font=('ariel', font_size_options), command=(lambda: OptionsKeyboard_open() if option_opeded==False else messagebox.Message('Options Opened!!'))).grid(row=4, column=16)
         else:
             Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
@@ -1097,6 +1134,13 @@ button3 = Button(root, text="visually impaired", command=user_login_blind)
 button3.pack()
 button3.place(relx=0.3, rely=0.6, anchor=CENTER)
 
+
+def on_closing():
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        root.destroy()
+
+
+root.protocol("WM_DELETE_WINDOW", on_closing)
 
 root.geometry("500x300+120+120")
 root.mainloop()
