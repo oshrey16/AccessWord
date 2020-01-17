@@ -64,7 +64,7 @@ def user_Register(disability):
                         found = True
                 if found == False:
                     c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white', 'autosize': 1} #defult options new user
-                    cursor.execute("INSERT INTO `User_Blind` (username, password, age, email, phone, options, autosize) VALUES (?,?,?,?,?,?)", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(), str(c_options)))
+                    cursor.execute("INSERT INTO `User_Blind` (username, password, age, email, phone, options) VALUES (?,?,?,?,?,?)", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(), str(c_options)))
                     conn.commit()
                     HomeWindow()
 
@@ -606,7 +606,7 @@ def Admin_Frame():
         listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(('UserName'), ('Report'), ('Date Of Report')))
         conn = sqlite3.connect("AdminPassword.db")
         cur = conn.cursor()
-        cur.execute("SELECT * FROM `User_Blind`")
+        cur.execute("SELECT * FROM `Reports`")
         record = cur.fetchall()
         for row in record:
             listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(row[1], row[2], row[3]))
@@ -734,7 +734,7 @@ def OptionsKeyboard():
 
     def Pre_Save_Settings():
         Home = Toplevel()
-        Home.title("AccessWord: User Login")
+        Home.title("AccessWord: Save Options")
         width = 400
         height = 100
         screen_width = root.winfo_screenwidth()
@@ -751,6 +751,8 @@ def OptionsKeyboard():
         def Yes_Save_Settings():
             Home.destroy()
             kb1.destroy()
+            global option_opeded
+            option_opeded = False
             Save_Settings()
         lbl_home = Label(Home, text="Are you sure?", font=('times new roman', 20)).pack()
         btn_save = Button(Home, text='SAVE!', command=Yes_Save_Settings).pack()
@@ -798,12 +800,12 @@ def OptionsKeyboard():
     def Report_TO_Admin():
         def Send_Report():
             def Send_ok():
+                messagebox.showinfo("AccessWord: Send Report", "The report was sent successfully!")
                 root.destroy()
 
             global conn, cursor
             conn = sqlite3.connect("AdminPassword.db")
             cursor = conn.cursor()
-            print(len(entryy.get()))
             if(len(entryy.get()) > 3):
                 cursor.execute("INSERT INTO `Reports` (username, date, text_report) VALUES (?,?,?)",(USERNAME.get(), DATE.get(), entryy.get()))
                 conn.commit()
@@ -1024,7 +1026,7 @@ def HosoPop(kb,entry):
         elif button == "Options":
             Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
                     activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
-                    pady=1, bd=2, font=('ariel', font_size_options), command=(lambda: OptionsKeyboard_open() if option_opeded==False else messagebox.Message('Options Opened!!'))).grid(row=4, column=16)
+                    pady=1, bd=2, font=('ariel', font_size_options), command=(lambda: OptionsKeyboard_open() if option_opeded==False else messagebox.showerror('Error', 'ERROR- Options opened!'))).grid(row=4, column=16)
         else:
             Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
