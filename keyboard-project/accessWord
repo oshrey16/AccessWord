@@ -1,28 +1,58 @@
 import tkinter as tk
 from tkinter import ttk
+import os
 from tkinter import *
+from tkinter import messagebox
 import sqlite3
+from tkinter import Listbox
+from tkinter import colorchooser
+from datetime import date
+import pyperclip
+from gtts import gTTS
+from pygame import mixer
+from datetime import datetime
+import speech_recognition as sr
+from PIL import ImageTk, Image
 
-
+indicator_log = False
+loguser=''
+logusertype=''
+c_options = dict()
+k_width = 0
+k_height = 0
+option_opeded = False
 # ====================================Register==========================================
 def user_Register(disability):
+<<<<<<< HEAD
     root = tk.Toplevel()
     root.title("AccessWord: Register User")
     width = 550
     height = 480
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
+=======
+    root1 = tk.Toplevel()
+    root1.title("AccessWord: Register User")
+    width = 550
+    height = 500
+    screen_width = root1.winfo_screenwidth()
+    screen_height = root1.winfo_screenheight()
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
     x = (screen_width / 2) - (width / 2)
     y = (screen_height / 2) - (height / 2)
-    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-    root.resizable(0, 0)
+    root1.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    root1.resizable(0, 0)
     # ==============================VARIABLES======================================
     USERNAME = StringVar()
     PASSWORD = StringVar()
     PASSWORD2 = StringVar()
     AGE = StringVar()
     EMAIL = StringVar()
+<<<<<<< HEAD
     DISABILITY = StringVar()
+=======
+    PHONE = StringVar()
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
 
     # ==============================METHODS========================================
     def Database():
@@ -30,14 +60,30 @@ def user_Register(disability):
         conn = sqlite3.connect("AdminPassword.db")
         cursor = conn.cursor()
         cursor.execute(
+<<<<<<< HEAD
             "CREATE TABLE IF NOT EXISTS `User_Blind` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT , age TEXT, email TEXT)")
         cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = 'admin' AND `password` = 'admin' AND `age` = 'admin' AND `email` = 'admin'")
+=======
+            "CREATE TABLE IF NOT EXISTS `User_Blind` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT , age TEXT, email TEXT, phone TEXT)")
+        cursor.execute("SELECT * FROM `User_Blind` WHERE `username` = 'admin' AND `password` = 'admin' AND `age` = 'admin' AND `email` = 'admin' AND `phone` = 'admin'")
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
 
     def Register(event=None):
+        global c_options
+        check = False
         Database()
-        if USERNAME.get() == "" or PASSWORD.get() == "" or AGE.get() == "" or EMAIL.get() == "":
+        found1 = False
+        found2 = False
+        if USERNAME.get() == "" or PASSWORD.get() == "" or PASSWORD2.get() == "" or AGE.get() == "" or EMAIL.get() == "" or PHONE.get() == "":
             lbl_text.config(text="Please complete the required field!", fg="red")
+        elif PASSWORD.get() != PASSWORD2.get():
+            lbl_text.config(text="Retype Password!", fg="red")
+        elif (len(PHONE.get()) != 9 and len(PHONE.get())!= 10):
+            lbl_text.config(text="Invalid Phone Number!", fg="red")
+        elif (len(AGE.get()) == 0):
+            lbl_text.config(text="Invalid Age!", fg="red")
         else:
+<<<<<<< HEAD
             if(disability == 'visually impaired'):
                 cursor.execute("SELECT `username` FROM `User_Blind`")
                 record = cursor.fetchall()
@@ -69,34 +115,96 @@ def user_Register(disability):
                     cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email) VALUES (?,?,?,?)",(USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get()))
                     conn.commit()
                     HomeWindow()
+=======
+            number = PHONE.get()
+            for digit in number:
+                if (digit != '1' and digit != '2' and digit != '3' and digit != '4' and digit != '5' and
+                        digit != '6' and digit != '7' and digit != '8' and digit != '9'):
+                    lbl_text.config(text="Invalid Phone Number!", fg="red")
+                    check = True
+            if check == False:
+                number = AGE.get()
+                for digit in number:
+                    if (digit != '1' and digit != '2' and digit != '3' and digit != '4' and digit != '5' and
+                            digit != '6' and digit != '7' and digit != '8' and digit != '9'):
+                        lbl_text.config(text="Invalid Age!", fg="red")
+                        check = True
+            if check == False:
+                eeemail = EMAIL.get()
+                for letter in eeemail:
+                    if letter == '@':
+                        found1 = True
+                    elif letter == '.':
+                        found2 = True
+                if found1 == False or found2==False:
+                    lbl_text.config(text="Invalid Email!", fg="red")
+            if check == False and found1 == True and found2== True:
+                if(disability == 'visually impaired'):
+                    cursor.execute("SELECT `username` FROM `User_Blind`")
+                    record = cursor.fetchall()
+                    found = False
+                    for row in record:
+                        if USERNAME.get() == row[0]:
+                            lbl_text.config(text="User Exsiests!!!", fg="red")
+                            USERNAME.set("")
+                            PASSWORD.set("")
+                            PASSWORD2.set("")
+                            found = True
+                    if found == False:
+                        c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white', 'autosize': 1, 'read_letters': 1} #defult options new user
+                        cursor.execute("INSERT INTO `User_Blind` (username, password, age, email, phone, options) VALUES (?,?,?,?,?,?)", (USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(), str(c_options)))
+                        conn.commit()
+                        HomeWindow()
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
 
-        cursor.close()
-        conn.close()
+                elif(disability == 'Hearing impaired'):
+                    cursor.execute("SELECT `username` FROM `User_Deaf`")
+                    record = cursor.fetchall()
+                    found = False
+                    for row in record:
+                        if USERNAME.get() == row[0]:
+                            lbl_text.config(text="User Exsiests!!!", fg="red")
+                            USERNAME.set("")
+                            PASSWORD.set("")
+                            PASSWORD2.set("")
+                            found = True
+                    if found == False:
+                        c_options = {'size': '1100x200', 'fontsize': '12', 'fontcolor': 'black', 'backcolor': 'white', 'autosize': 1, 'read_letters': 1}  # defult options new user
+                        cursor.execute("INSERT INTO `User_Deaf` (username, password, age, email, phone, options) VALUES (?,?,?,?,?,?)",(USERNAME.get(), PASSWORD.get(), AGE.get(), EMAIL.get(), PHONE.get(),str(c_options)))
+                        conn.commit()
+                        HomeWindow()
+            cursor.close()
+            conn.close()
 
     def HomeWindow():
         global Home
-        root.withdraw()
+        root1.destroy()
         Home = Toplevel()
         Home.title("AccessWord: Register User")
         width = 400
         height = 100
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
+        screen_width = Home.winfo_screenwidth()
+        screen_height = Home.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
         y = (screen_height / 2) - (height / 2)
-        root.resizable(0, 0)
+        Home.resizable(0, 0)
         Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
         lbl_home = Label(Home, text="Successfully Register!", font=('times new roman', 20)).pack()
         btn_back = Button(Home, text='OK', command=CloseRegister).pack(pady=20, fill=X)
 
+
     def CloseRegister():
         Home.destroy()
-        keyboard()      # Change To User_Blind Frame!!!
+        global loguser
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = disability
+        keyboard()
 
     # ==============================FRAMES=========================================
-    Top = Frame(root, bd=2, relief=RIDGE)
+    Top = Frame(root1, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
-    Form = Frame(root, height=200)
+    Form = Frame(root1, height=200)
     Form.pack(side=TOP, pady=20)
 
     # ==============================LABELS=========================================
@@ -112,12 +220,21 @@ def user_Register(disability):
     lbl_age.grid(row=3, sticky="e")
     lbl_email = Label(Form, text="Email:", font=('arial', 14), bd=15)
     lbl_email.grid(row=4, sticky="e")
+<<<<<<< HEAD
     lbl_disability = Label(Form, text="Disability:", font=('arial', 14), bd=15)
     lbl_disability.grid(row=5, sticky="e")
     lbl_disabilityshow = Label(Form, text=disability, font=('arial', 14), bd=15)
     lbl_disabilityshow.grid(row=5, column=1)
+=======
+    lbl_phone = Label(Form, text="Phone:", font=('arial', 14), bd=15)
+    lbl_phone.grid(row=5, sticky="e")
+    lbl_disability = Label(Form, text="Disability:", font=('arial', 14), bd=15)
+    lbl_disability.grid(row=6, sticky="e")
+    lbl_disabilityshow = Label(Form, text=disability, font=('arial', 14), bd=15)
+    lbl_disabilityshow.grid(row=6, column=1)
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
     lbl_text = Label(Form)
-    lbl_text.grid(row=6, columnspan=2)
+    lbl_text.grid(row=7, columnspan=2)
 
     # ==============================ENTRY WIDGETS==================================
     username = Entry(Form, textvariable=USERNAME, font=(14))
@@ -140,26 +257,43 @@ def user_Register(disability):
     age.grid(row=3, column=1)
     email = Entry(Form, textvariable=EMAIL, font=(14))
     email.grid(row=4, column=1)
+<<<<<<< HEAD
     # ==============================BUTTON WIDGETS=================================
     btn_login = Button(Form, text="Register", width=45, command=Register)
     btn_login.grid(pady=0, row=8, columnspan=2)
+=======
+    phone = Entry(Form, textvariable=PHONE, font=(14))
+    phone.grid(row=5, column=1)
+    # ==============================BUTTON WIDGETS=================================
+    btn_login = Button(Form, text="Register", width=45, command=Register)
+    btn_login.grid(pady=0, row=8, columnspan=3, column=0)
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
     btn_login.bind('<Return>', Register)
-    #btn_register = Button(Form, text="Register", width=20, command=Register_Win)
-    #btn_register.grid(pady=10, row=4, columnspan=2)
-    #btn_register.bind('<Return>', Login)
 # ====================================Register==========================================
+<<<<<<< HEAD
 #========================user_login_blind========================
+=======
+    def on_closing():
+        if messagebox.askokcancel("Quit", "Exit From Register?\nYour draft will be deleted"):
+            root1.destroy()
+            global root
+            root.deiconify()
+    root1.protocol("WM_DELETE_WINDOW", on_closing)
+#========================user_login_visually impaired========================
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
 def user_login_blind():
-    root = tk.Toplevel()
-    root.title("AccessWord: user Login")
+    global root
+    root.withdraw()
+    root1 = tk.Toplevel()
+    root1.title("AccessWord: user Login visually impaired")
     width = 400
     height = 280
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
+    screen_width = root1.winfo_screenwidth()
+    screen_height = root1.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
     y = (screen_height / 2) - (height / 2)
-    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-    root.resizable(0, 0)
+    root1.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    root1.resizable(0, 0)
     # ==============================VARIABLES======================================
     USERNAME = StringVar()
     PASSWORD = StringVar()
@@ -182,9 +316,6 @@ def user_login_blind():
                            (USERNAME.get(), PASSWORD.get()))
             if cursor.fetchone() is not None:
                 HomeWindow()
-                USERNAME.set("")
-                PASSWORD.set("")
-                lbl_text.config(text="")
             else:
                 lbl_text.config(text="Invalid username or password", fg="red")
                 USERNAME.set("")
@@ -194,32 +325,53 @@ def user_login_blind():
 
     def HomeWindow():
         global Home
-        root.withdraw()
+        root1.destroy()
         Home = Toplevel()
         Home.title("AccessWord: User Login")
         width = 400
         height = 100
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
+        screen_width = Home.winfo_screenwidth()
+        screen_height = Home.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
         y = (screen_height / 2) - (height / 2)
-        root.resizable(0, 0)
+        Home.resizable(0, 0)
         Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
         lbl_home = Label(Home, text="Successfully Login!", font=('times new roman', 20)).pack()
         btn_back = Button(Home, text='OK', command=CloseLogin).pack(pady=20, fill=X)
+        mixer.music.load("hello to user/login_successful.mp3")
+        mixer.music.play()
 
     def CloseLogin():
         Home.destroy()
-        keyboard()      # Change To User_Blind Frame!!!
+        global loguser
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = 'visually impaired'
+        global conn, cursor
+        conn = sqlite3.connect("AdminPassword.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM `User_Blind`")
+        record = cursor.fetchall()
+        for row in record:
+            if loguser == row[1]:
+                global c_options
+                d = eval(row[6])
+                d = dict(d)  # convert to dict
+                c_options = d
+        keyboard()
 
     def user_Register_blind():
+<<<<<<< HEAD
         root.destroy()
+=======
+        root1.destroy()
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
         user_Register('visually impaired')
 
     # ==============================FRAMES=========================================
-    Top = Frame(root, bd=2, relief=RIDGE)
+    Top = Frame(root1, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
-    Form = Frame(root, height=200)
+    Form = Frame(root1, height=200)
     Form.pack(side=TOP, pady=20)
 
     # ==============================LABELS=========================================
@@ -245,21 +397,27 @@ def user_login_blind():
     btn_register = Button(Form, text="Register", width=20, command=user_Register_blind)
     btn_register.grid(pady=10, row=4, columnspan=2)
     btn_register.bind('<Return>', Login)
-#========================user_login_blind========================
+#========================user_login_visually impaired========================
+    def on_closing():
+        root1.destroy()
+        global root
+        root.deiconify()
 
-
-#========================user_login_deaf========================
+    root1.protocol("WM_DELETE_WINDOW", on_closing)
+#========================user_login_Hearing impaired========================
 def user_login_deaf():
-    root = tk.Toplevel()
-    root.title("AccessWord: user Login")
+    global root
+    root.withdraw()
+    root1 = tk.Toplevel()
+    root1.title("AccessWord: user Login Hearing impaired")
     width = 400
     height = 280
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
+    screen_width = root1.winfo_screenwidth()
+    screen_height = root1.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
     y = (screen_height / 2) - (height / 2)
-    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-    root.resizable(0, 0)
+    root1.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    root1.resizable(0, 0)
     # ==============================VARIABLES======================================
     USERNAME = StringVar()
     PASSWORD = StringVar()
@@ -272,9 +430,6 @@ def user_login_deaf():
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS `User_Deaf` (mem_id INTEGER NOT NULL PRIMARY KEY  AUTOINCREMENT, username TEXT, password TEXT)")
         cursor.execute("SELECT * FROM `User_Deaf` WHERE `username` = 'admin' AND `password` = 'admin'")
-        #if cursor.fetchone() is None:
-            #cursor.execute("INSERT INTO `User_Deaf` (username, password) VALUES('admin', 'admin')")
-            #conn.commit()
 
     def Login(event=None):
         Database()
@@ -285,9 +440,6 @@ def user_login_deaf():
                            (USERNAME.get(), PASSWORD.get()))
             if cursor.fetchone() is not None:
                 HomeWindow()
-                USERNAME.set("")
-                PASSWORD.set("")
-                lbl_text.config(text="")
             else:
                 lbl_text.config(text="Invalid username or password", fg="red")
                 USERNAME.set("")
@@ -297,31 +449,53 @@ def user_login_deaf():
 
     def HomeWindow():
         global Home
-        root.withdraw()
+        root1.destroy()
         Home = Toplevel()
         Home.title("AccessWord: User Login")
         width = 400
         height = 100
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
+        screen_width = Home.winfo_screenwidth()
+        screen_height = Home.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
         y = (screen_height / 2) - (height / 2)
-        root.resizable(0, 0)
+        Home.resizable(0, 0)
         Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
         lbl_home = Label(Home, text="Successfully Login!", font=('times new roman', 20)).pack()
         btn_back = Button(Home, text='OK', command=CloseLogin).pack(pady=20, fill=X)
 
     def CloseLogin():
         Home.destroy()
+<<<<<<< HEAD
         keyboard()      # Change To User_Blind Frame!!!
 
     def user_Register_hearing():
         root.destroy()
+=======
+        global loguser
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = 'Hearing impaired'
+        global conn, cursor
+        conn = sqlite3.connect("AdminPassword.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM `User_Blind`")
+        record = cursor.fetchall()
+        for row in record:
+            if loguser == row[1]:
+                global c_options
+                d = eval(row[6])
+                d = dict(d)  # convert to dict
+                c_options = d
+        keyboard()
+
+    def user_Register_hearing():
+        root1.destroy()
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
         user_Register('Hearing impaired')
     # ==============================FRAMES=========================================
-    Top = Frame(root, bd=2, relief=RIDGE)
+    Top = Frame(root1, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
-    Form = Frame(root, height=200)
+    Form = Frame(root1, height=200)
     Form.pack(side=TOP, pady=20)
 
     # ==============================LABELS=========================================
@@ -351,19 +525,26 @@ def user_login_deaf():
     btn_register.grid(pady=10, row=4, columnspan=2)
     btn_register.bind('<Return>', Login)
 #========================user_login_deaf========================
+    def on_closing():
+        root1.destroy()
+        global root
+        root.deiconify()
 
+    root1.protocol("WM_DELETE_WINDOW", on_closing)
 #========================Admin_Login========================
 def admin_login():
-    root = tk.Toplevel()
-    root.title("AccessWord: Admin Login")
+    global root
+    root.withdraw()
+    root1 = tk.Toplevel()
+    root1.title("AccessWord: Admin Login")
     width = 400
     height = 280
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
+    screen_width = root1.winfo_screenwidth()
+    screen_height = root1.winfo_screenheight()
     x = (screen_width / 2) - (width / 2)
     y = (screen_height / 2) - (height / 2)
-    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-    root.resizable(0, 0)
+    root1.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    root1.resizable(0, 0)
 
     # ==============================VARIABLES======================================
     USERNAME = StringVar()
@@ -390,9 +571,6 @@ def admin_login():
                            (USERNAME.get(), PASSWORD.get()))
             if cursor.fetchone() is not None:
                 HomeWindow()
-                USERNAME.set("")
-                PASSWORD.set("")
-                lbl_text.config(text="")
             else:
                 lbl_text.config(text="Invalid username or password", fg="red")
                 USERNAME.set("")
@@ -402,27 +580,46 @@ def admin_login():
 
     def HomeWindow():
         global Home
-        root.withdraw()
+        root1.destroy()
         Home = Toplevel()
         Home.title("Python: Simple Login Application")
         width = 400
         height = 100
-        screen_width = root.winfo_screenwidth()
-        screen_height = root.winfo_screenheight()
+        screen_width = Home.winfo_screenwidth()
+        screen_height = Home.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
         y = (screen_height / 2) - (height / 2)
-        root.resizable(0, 0)
+        Home.resizable(0, 0)
         Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
         lbl_home = Label(Home, text="Successfully Login!", font=('times new roman', 20)).pack()
         btn_back = Button(Home, text='OK', command=CloseLogin).pack(pady=20, fill=X)
 
     def CloseLogin():
         Home.destroy()
+<<<<<<< HEAD
+=======
+        global loguser
+        global c_options
+        global logusertype
+        loguser = USERNAME.get()
+        logusertype = 'admin'
+        global conn, cursor
+        conn = sqlite3.connect("AdminPassword.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM `Admin`")
+        record = cursor.fetchall()
+        for row in record:
+            if loguser == row[1]:
+                global c_options
+                d = eval(row[6])
+                d = dict(d)  # convert to dict
+                c_options = d
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
         Admin_Frame()
     # ==============================FRAMES=========================================
-    Top = Frame(root, bd=2, relief=RIDGE)
+    Top = Frame(root1, bd=2, relief=RIDGE)
     Top.pack(side=TOP, fill=X)
-    Form = Frame(root, height=200)
+    Form = Frame(root1, height=200)
     Form.pack(side=TOP, pady=20)
 
     # ==============================LABELS=========================================
@@ -446,6 +643,7 @@ def admin_login():
     btn_login.grid(pady=25, row=3, columnspan=2)
     btn_login.bind('<Return>', Login)
 #========================End of Admin_Login========================
+<<<<<<< HEAD
 #========================Admin_Frame========================
 def Admin_Frame():
     def Admin_Frame_Main():
@@ -453,10 +651,26 @@ def Admin_Frame():
         root.title("AccessWord: Admin")
         width = 380
         height = 180
+=======
+    def on_closing():
+        root1.destroy()
+        global root
+        root.deiconify()
+
+    root1.protocol("WM_DELETE_WINDOW", on_closing)
+#========================Admin_Frame========================
+def Admin_Frame():
+    def Admin_Frame_Main():
+        root1 = tk.Toplevel()
+        root1.title("AccessWord: Admin Options")
+        width = 380
+        height = 200
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
         y = (screen_height / 2) - (height / 2)
+<<<<<<< HEAD
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
         #------Buttons------
@@ -466,6 +680,44 @@ def Admin_Frame():
         button2 = Button(root, text="Show Reports", command=Show_reports)
         button2.pack()
         button2.place(relx=0.5, rely=0.5, anchor=CENTER)
+=======
+        root1.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root1.resizable(0, 0)
+
+        mixer.init()
+        mixer.music.load("good.mp3")
+        language = 'en'
+        myobj = gTTS(text="Hello " + loguser + "You Are The administrator,Please Choose option", lang=language, slow=False)
+        myobj.save('good1.mp3')
+        mixer.music.load("good1.mp3")
+        mixer.music.play()
+        #------Buttons------
+        button1 = Button(root1, text="Show Users Of AccessWord", command=Show_users)
+        button1.pack()
+        button1.place(relx=0.5, rely=0.3, anchor=CENTER)
+        button2 = Button(root1, text="Show Reports", command=Show_reports)
+        button2.pack()
+        button2.place(relx=0.5, rely=0.5, anchor=CENTER)
+        button3 = Button(root1, text="Open KeyBoard", command=keyboard)
+        button3.pack()
+        button3.place(relx=0.5, rely=0.7, anchor=CENTER)
+        button4 = Button(root1, text="contact to developer", command=Show_contact)
+        button4.pack()
+        button4.place(relx=0.5, rely=0.9, anchor=CENTER)
+        # ------Labels------
+        lbl_title = Label(root1, text="AccessWord: Admin Options", font=('arial', 15))
+        lbl_title.pack(fill=X)
+
+        def on_closing():
+            mixer.music.load("hello to user/logout question.mp3")
+            mixer.music.play()
+            if messagebox.askokcancel("Quit", loguser + ", Do you want to quit (LogOut)?"):
+                root1.destroy()
+                root.deiconify()
+                global indicator_log
+                indicator_log = False
+        root1.protocol("WM_DELETE_WINDOW", on_closing)
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
 
     def Show_users():
         root = tk.Toplevel()
@@ -478,12 +730,296 @@ def Admin_Frame():
         y = (screen_height / 2) - (height / 2)
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
+<<<<<<< HEAD
+=======
+        scrollbar = tk.Scrollbar(root, orient="vertical")
+        listbox = tk.Listbox(root, font=('ariel', 10), width=90, height=20)
+        listbox.pack(expand='yes', fill='both')
+        listbox.place(relx=0.5, rely=0.5, anchor=CENTER)
+        scrollbar.config(command=listbox.yview)
+        scrollbar.pack(side="right", fill="y")
+        listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(('UserName'), ('Password'), ('Age'), ('Email'), ('Phone')))
+        def viewUsers(x):
+            listbox.delete(0, 'end')
+            listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(('UserName'), ('Password'), ('Age'), ('Email'),('Phone')))
+            if(x=='visually impaired'):
+                conn = sqlite3.connect("AdminPassword.db")
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM `User_Blind`")
+                record = cur.fetchall()
+                for row in record:
+                    listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(row[1], row[2], row[3], row[4], row[5]))
+            else:
+                conn = sqlite3.connect("AdminPassword.db")
+                cur = conn.cursor()
+                cur.execute("SELECT * FROM `User_Deaf`")
+                record = cur.fetchall()
+                for row in record:
+                    listbox.insert('end', '{:20s}|{:20s}|{:10s}|{:40s}|{:10s}'.format(row[1], row[2], row[3], row[4], row[5]))
+        # ------Buttons------
+        button1 = Button(root, text="Visually impaired", command=lambda: viewUsers('visually impaired'))
+        button1.pack()
+        button1.place(relx=0.3, rely=0.05, anchor=CENTER)
+        button2 = Button(root, text="Hearing impaired", command=lambda: viewUsers('Hearing impaired'))
+        button2.pack()
+        button2.place(relx=0.6, rely=0.05, anchor=CENTER)
+        conn.close()
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
 
     def Show_reports():
         root = tk.Toplevel()
         root.title("AccessWord: Reports")
+<<<<<<< HEAD
         width = 550
         height = 480
+=======
+        width = 750
+        height = 580
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root.resizable(0, 0)
+<<<<<<< HEAD
+
+    Admin_Frame_Main()
+#========================End of Admin_Frame========================
+=======
+        # ---Frames---
+        Top = Frame(root, bd=2, relief=RIDGE)
+        Top.pack(side=TOP, fill=X)
+        Form = Frame(root, height=200)
+        Form.pack(side=TOP, pady=0)
+        Form.place(relx=0.1, rely=0.2)
+        # ---End Frames---
+        lbl_title = Label(Top, text="Reports", font=('arial', 15))
+        lbl_title.pack(fill=X)
+        scrollbar = tk.Scrollbar(root, orient="vertical")
+        listbox = tk.Listbox(root, font=('ariel', 10), width=90, height=30)
+        listbox.pack(expand='yes', fill='both')
+        listbox.place(relx=0.5, rely=0.5, anchor=CENTER)
+        scrollbar.config(command=listbox.yview)
+        scrollbar.pack(side="right", fill="y")
+        listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(('UserName'), ('Report'), ('Date Of Report')))
+        conn = sqlite3.connect("AdminPassword.db")
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM `Reports`")
+        record = cur.fetchall()
+        for row in record:
+            listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(row[1], row[2], row[3]))
+        conn.close()
+
+    def Show_contact():
+        root = tk.Toplevel()
+        root.title("AccessWord: Contact To Developer")
+        width = 380
+        height = 250
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        root.resizable(0, 0)
+        #---Frames---
+        Top = Frame(root, bd=2, relief=RIDGE)
+        Top.pack(side=TOP, fill=X)
+        Form = Frame(root, height=200)
+        Form.pack(side=TOP, pady=0)
+        Form.place(relx=0.1, rely=0.2)
+        # ---End Frames---
+        lbl_title = Label(Top, text="Contact To Developer", font=('arial', 15))
+        lbl_title.pack(fill=X)
+        lbl_name = Label(Form, text="Name:", font=('arial', 12), bd=15)
+        lbl_name.grid(row=0, column=0, sticky="e")
+        lbl_email = Label(Form, text="Email:", font=('arial', 12), bd=15)
+        lbl_email.grid(row=1, column=0, sticky="e")
+        lbl_phone = Label(Form, text="Phone Number:", font=('arial', 12), bd=15)
+        lbl_phone.grid(row=2, column=0, sticky="e")
+        ###
+        lbl_name_s = Label(Form, text="SCE", font=('arial', 12), bd=15)
+        lbl_name_s.grid(row=0, column=1, sticky="e")
+        lbl_email_s = Label(Form, text="Oshreav@ac.sce.ac.il", font=('arial', 12), bd=15)
+        lbl_email_s.grid(row=1, column=1, sticky="e")
+        lbl_phone_s = Label(Form, text="0504995388", font=('arial', 12), bd=15)
+        lbl_phone_s.grid(row=2, column=1, sticky="e")
+
+    Admin_Frame_Main()
+#========================End of Admin_Frame========================
+def OptionsKeyboard():
+    global option_opeded
+    kb = tk.Toplevel()
+    kb.title("KeyBoard - Options")
+    width = 780
+    height = 720
+    screen_width = kb.winfo_screenwidth()
+    screen_height = kb.winfo_screenheight()
+    x = (screen_width / 2) - (width / 2)
+    y = (screen_height / 2) - (height / 2)
+    kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
+    kb.resizable(0, 0)
+    option_opeded = True
+
+    def on_closing():
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            global option_opeded
+            option_opeded = False
+            kb.destroy()
+            keyboard()
+
+    kb.protocol("WM_DELETE_WINDOW", on_closing)
+    # ==============================FRAMES=========================================
+    Top = Frame(kb, bd=2, relief=RIDGE)
+    Top.pack(side=TOP, fill=X)
+    Form = Frame(kb, height=200)
+    Form.pack(side=TOP, pady=0)
+    Form.place(relx=0.1, rely=0.1)
+    # ==============================LABELS=========================================
+    lbl_title = Label(Top, text="AccessWord: " + loguser + " Options", font=('arial', 15))
+    lbl_title.pack(fill=X)
+    lbl_window_size = Label(Form, text="window size:", font=('arial', 14), bd=15)
+    lbl_window_size.grid(row=0, column=0, sticky="e")
+    lbl_font = Label(Form, text="font size:", font=('arial', 14), bd=15)
+    lbl_font.grid(row=0, column=4, sticky="e")
+    lbl_font_color = Label(Form, text="font color:", font=('arial', 14), bd=15)
+    lbl_font_color.grid(row=0, column=10, sticky="e")
+    lbl_back_color = Label(Form, text="backcolor:", font=('arial', 14), bd=15)
+    lbl_back_color.grid(row=0, column=15, sticky="e")
+
+    # ==============================ListBoxs=========================================
+    def call_me1():
+        nonlocal lbl_font_color1
+        nonlocal font_color_box
+        clr = colorchooser.askcolor(title="select color - font color")
+        lbl_font_color1['text'] = clr[1]
+        font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
+        font_color_box.grid(row=6, column=10, columnspan=3)
+
+    def call_me2():
+        nonlocal back_color_box
+        nonlocal lbl_back_color1
+        clr = colorchooser.askcolor(title="select color - back color")
+        lbl_back_color1['text'] = clr[1]
+        back_color_box = Entry(Form1, textvariable=back_color_boxX, font=(14), bg=lbl_back_color1['text'], width=4)
+        back_color_box.grid(row=6, column=15, columnspan=3)
+
+    button1 = Button(kb, text="custom color", command=call_me1)
+    button1.pack()
+    button1.place(relx=0.5, rely=0.5, anchor=CENTER)
+    button2 = Button(kb, text="custom color", command=call_me2)
+    button2.pack()
+    button2.place(relx=0.65, rely=0.5, anchor=CENTER)
+    #Get Selected Value From ListBox
+    def CurSelet1(evt):
+        value = listbox_window_size.get(ANCHOR)
+        lbl_window_size1['text'] = value
+    def CurSelet2(evt):
+        value = listbox_font.get(ANCHOR)
+        lbl_font1_size['text'] = value
+        font_size_box.configure(font=('ariel', value))
+        font_size_box.grid(row=6, column=4, columnspan=3)
+    def CurSelet3(evt):
+        value = listbox_font_color.get(ANCHOR)
+        lbl_font_color1['text'] = value
+        font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
+        font_color_box.grid(row=6, column=10, columnspan=3)
+    def CurSelet4(evt):
+        value = listbox_backcolor.get(ANCHOR)
+        lbl_back_color1['text'] = value
+        back_color_box = Entry(Form1, textvariable=back_color_boxX, font=(14), bg=lbl_back_color1['text'], width=4)
+        back_color_box.grid(row=6, column=15, columnspan=3)
+
+
+    def Pre_Save_Settings():
+        Home = Toplevel()
+        Home.title("AccessWord: Save Options")
+        width = 400
+        height = 100
+        screen_width = root.winfo_screenwidth()
+        screen_height = root.winfo_screenheight()
+        x = (screen_width / 2) - (width / 2)
+        y = (screen_height / 2) - (height / 2)
+        root.resizable(0, 0)
+        Home.geometry("%dx%d+%d+%d" % (width, height, x, y))
+        save_c_options = c_options
+        def NO_Save_Settings():
+            Home.destroy()
+            c_options = save_c_options
+            kb1.destroy()
+        def Yes_Save_Settings():
+            Home.destroy()
+            kb1.destroy()
+            global option_opeded
+            option_opeded = False
+            Save_Settings()
+        lbl_home = Label(Home, text="Are you sure?", font=('times new roman', 20)).pack()
+        btn_save = Button(Home, text='SAVE!', command=Yes_Save_Settings).pack()
+        btn_notsave = Button(Home, text='NO!!!', command=NO_Save_Settings).pack()
+        c_options['size'] = lbl_window_size1['text']
+        c_options['fontsize'] = lbl_font1_size['text']
+        c_options['fontcolor'] = lbl_font_color1['text']
+        c_options['backcolor'] = lbl_back_color1['text']
+        c_options['autosize'] = Auto_size.get()
+        c_options['read_letters'] = Read_Letters.get()
+        keyboard()
+
+    def Save_Settings():
+        c_options['size'] = lbl_window_size1['text']
+        c_options['fontsize'] = lbl_font1_size['text']
+        c_options['fontcolor'] = lbl_font_color1['text']
+        c_options['backcolor'] = lbl_back_color1['text']
+        c_options['autosize'] = Auto_size.get()
+        c_options['read_letters'] = Read_Letters.get()
+        if(logusertype == 'visually impaired'):
+            global conn, cursor
+            conn = sqlite3.connect("AdminPassword.db")
+            cursor = conn.cursor()
+            cursor.execute("""UPDATE User_Blind
+            SET options=?
+            WHERE username=?
+            """, (str(c_options), loguser))
+            conn.commit()
+            conn.close()
+        if (logusertype == 'Hearing impaired'):
+            conn = sqlite3.connect("AdminPassword.db")
+            cursor = conn.cursor()
+            cursor.execute("""UPDATE User_Deaf
+                    SET options=?
+                    WHERE username=?
+                    """, (str(c_options), loguser))
+            conn.commit()
+            conn.close()
+        kb.destroy()
+        keyboard()
+    def Back_To_Keyboard():
+        global option_opeded
+        option_opeded = False
+        kb.destroy()
+        keyboard()
+
+    def Report_TO_Admin():
+        def Send_Report():
+            def Send_ok():
+                messagebox.showinfo("AccessWord: Send Report", "The report was sent successfully!")
+                root.destroy()
+
+            global conn, cursor
+            conn = sqlite3.connect("AdminPassword.db")
+            cursor = conn.cursor()
+            if(len(entryy.get()) > 3):
+                cursor.execute("INSERT INTO `Reports` (username, date, text_report) VALUES (?,?,?)",(USERNAME.get(), DATE.get(), entryy.get()))
+                conn.commit()
+                conn.close()
+                Send_ok()
+            else:
+                lbl_text.config(text="Please Write The Report!", fg="red")
+
+
+        root = tk.Toplevel()
+        root.title("AccessWord: Report Problem")
+        width = 550
+        height = 500
         screen_width = root.winfo_screenwidth()
         screen_height = root.winfo_screenheight()
         x = (screen_width / 2) - (width / 2)
@@ -491,101 +1027,421 @@ def Admin_Frame():
         root.geometry("%dx%d+%d+%d" % (width, height, x, y))
         root.resizable(0, 0)
 
-    Admin_Frame_Main()
-#========================End of Admin_Frame========================
+        USERNAME = StringVar()
+        DATE = StringVar()
+
+        # ==============================FRAMES=========================================
+        Top = Frame(root, bd=2, relief=RIDGE)
+        Top.pack(side=TOP, fill=X)
+        Form = Frame(root, height=200)
+        Form.pack(side=TOP, pady=20)
+
+        # ==============================LABELS=========================================
+        lbl_title = Label(Top, text="AccessWord: Report Problem", font=('arial', 15))
+        lbl_title.pack(fill=X)
+        lbl_username = Label(Form, text="Username:", font=('arial', 14), bd=15)
+        lbl_username.grid(row=0, sticky="e")
+        lbl_password = Label(Form, text="Date:", font=('arial', 14), bd=15)
+        lbl_password.grid(row=1, sticky="e")
+        lbl_password2 = Label(Form, text="Messege:", font=('arial', 14), bd=15)
+        lbl_password2.grid(row=2, sticky="e")
+        # dd/mm/YY
+        d1 = today.strftime("%d/%m/%Y")
+
+        username = Entry(Form, textvariable=USERNAME, font=(14), state=DISABLED)
+        username.grid(row=0, column=1)
+        USERNAME.set(loguser)
+        date = Entry(Form, textvariable=DATE, font=(14), state=DISABLED)
+        date.grid(row=1, column=1)
+        DATE.set(d1)
+        entryy = Entry(Form, width=128)
+        entryy.grid(rowspan=8, columnspan=15, ipadx=100, ipady=20)
+
+        open_keyboard = Button(Form, text="Open Keyboard", width=30, command=keyboard)
+        open_keyboard.grid(pady=25, row=14, columnspan=2)
+        open_keyboard.bind('<Return>', keyboard)
+        btn_send = Button(Form, text="Send Report", width=45, command=Send_Report)
+        btn_send.grid(pady=25, row=11, columnspan=2)
+        btn_send.bind('<Return>', Send_Report)
+        lbl_text = Label(Form)
+        lbl_text.grid(row=12, columnspan=2)
+
+
+    listbox_window_size = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_window_size.pack(expand='yes', fill='both')
+    listbox_window_size.place(relx=0.2, rely=0.32, anchor=CENTER)
+    listbox_window_size.insert('end', '1100x200', '1100x400', '1100x600', '1200x700')
+    listbox_window_size.bind('<<ListboxSelect>>', CurSelet1)
+    listbox_font = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_font.pack(expand='yes', fill='both')
+    listbox_font.place(relx=0.34, rely=0.32, anchor=CENTER)
+    listbox_font.insert('end', '8', '10', '12', '14', '16', '20', '24', '28', '32')
+    listbox_font.bind('<<ListboxSelect>>', CurSelet2)
+    listbox_font_color = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_font_color.pack(expand='yes', fill='both')
+    listbox_font_color.place(relx=0.5, rely=0.32, anchor=CENTER)
+    listbox_font_color.insert('end', 'black', 'red', 'blue', 'white', 'green')
+    listbox_font_color.bind('<<ListboxSelect>>', CurSelet3)
+    listbox_backcolor = tk.Listbox(kb, font=('ariel', 10), width=10, height=10)
+    listbox_backcolor.pack(expand='yes', fill='both')
+    listbox_backcolor.place(relx=0.65, rely=0.32, anchor=CENTER)
+    listbox_backcolor.insert('end', 'black', 'red', 'blue', 'white', 'green')
+    listbox_backcolor.bind('<<ListboxSelect>>', CurSelet4)
+
+    Auto_size = IntVar()
+    auto_size = Checkbutton(kb, text="Auto Size", variable=Auto_size)
+    auto_size.pack()
+    auto_size.place(relx=0.2, rely=0.45, anchor=CENTER)
+
+    Read_Letters = IntVar()
+    read_letters = Checkbutton(kb, text="Read Letters", variable=Read_Letters,font=15,fg="red")
+    read_letters.pack()
+    read_letters.place(relx=0.2, rely=0.5, anchor=CENTER)
+
+    # ==============================LABELS Corrent Options=========================================
+
+    Form1 = Frame(kb, height=200)
+    Form1.pack(side=TOP, pady=0)
+    Form1.place(relx=0.1, rely=0.55)
+    lbl_cur_options = Label(Form1, text="Current options:", font=('arial', 16), bd=15)
+    lbl_cur_options.grid(row=0, column=0, sticky="e", columnspan=15)
+    lbl_window_size = Label(Form1, text="window size:", font=('arial', 14), bd=15)
+    lbl_window_size.grid(row=4, column=0, sticky="e")
+    lbl_font = Label(Form1, text="font size:", font=('arial', 14), bd=15)
+    lbl_font.grid(row=4, column=4, sticky="e")
+    lbl_font_color = Label(Form1, text="font color:", font=('arial', 14), bd=15)
+    lbl_font_color.grid(row=4, column=10, sticky="e")
+    lbl_back_color = Label(Form1, text="backcolor:", font=('arial', 14), bd=15)
+    lbl_back_color.grid(row=4, column=15, sticky="e")
+
+    lbl_window_size1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
+    lbl_window_size1.grid(row=8, column=0, sticky="e")
+    lbl_font1_size = Label(Form1, text="NULL", font=('arial', 14), bd=15)
+    lbl_font1_size.grid(row=8, column=4, sticky="e")
+    lbl_font_color1 = Label(Form1, text='NULL', font=('arial', 14), bd=15)
+    lbl_font_color1.grid(row=8, column=10, sticky="e")
+    lbl_back_color1 = Label(Form1, text="NULL", font=('arial', 14), bd=15)
+    lbl_back_color1.grid(row=8, column=15, sticky="e")
+
+    Form2 = Frame(kb, height=300)
+    Form2.pack(side=TOP, pady=0)
+    Form2.place(relx=0.3, rely=0.85)
+
+    btn_save = Button(Form2, text="Save Settings", width=35, height=3, command=Pre_Save_Settings)
+    btn_save.grid(pady=0, row=0, column=0)
+    btn_report = Button(Form2, text="Report Problem", width=15, command=Report_TO_Admin)
+    btn_report.grid(pady=0, row=5, column=0)
+    btn_report = Button(Form2, text="BACK", width=15, command=Back_To_Keyboard)
+    btn_report.grid(pady=0, row=5, column=7)
+
+    #####LOAD OPTION FOR USER
+    global conn, cursor
+    conn = sqlite3.connect("AdminPassword.db")
+    cursor = conn.cursor()
+    if (logusertype == 'visually impaired'):
+        cursor.execute("SELECT * FROM `User_Blind`")
+    elif (logusertype == 'Hearing impaired'):
+        cursor.execute("SELECT * FROM `User_Deaf`")
+    else:
+        cursor.execute("SELECT * FROM `Admin`")
+    record = cursor.fetchall()
+    for row in record:
+        if loguser == row[1]:
+            global c_options
+            d = eval(row[6])
+            d = dict(d)  #convert to dict
+            c_options = d
+            lbl_window_size1['text'] = d['size']
+            lbl_font1_size['text'] = d['fontsize']
+            lbl_font_color1['text'] = d['fontcolor']
+            lbl_back_color1['text'] = d['backcolor']
+            Auto_size.set(d['autosize'])
+            Read_Letters.set(d['read_letters'])
+
+    #######BOX COLOR INDICATION#######
+    font_size_boxX = StringVar()
+    font_size_box = Entry(Form1, textvariable=font_size_boxX, font=lbl_font1_size['text'], width=4)
+    font_size_box.grid(row=6, column=4, columnspan=3)
+    font_size_boxX.set('abc')
+    font_color_boxX = StringVar()
+    font_color_box = Entry(Form1, textvariable=font_color_boxX, font=(14), bg=lbl_font_color1['text'], width=4)
+    font_color_box.grid(row=6, column=10, columnspan=3)
+    back_color_boxX = StringVar()
+    back_color_box = Entry(Form1, textvariable=back_color_boxX, font=(14), bg=lbl_back_color1['text'], width=4)
+    back_color_box.grid(row=6, column=15, columnspan=3)
+>>>>>>> f9387f1ba7acdc799377c5de9a233a2c527dd68f
 
 def select(value):
-    if value == "BACK":
-        entry.delete(len(entry.get()) - 1, END)
+    if c_options['read_letters'] == 1:
+        if(value == '.'):
+            read_v = 'dot'
+        elif (value == '?'):
+            read_v = 'Question Mark'
+        elif (value == ','):
+            read_v = 'comma'
+        elif (value == '/'):
+            read_v = 'Slash'
+        elif (value == ' '):
+            read_v = 'Space'
+        elif (value == '<-'):
+            read_v = 'delete'
+        else:
+            read_v = value
+        mixer.music.load("letters/"+read_v+".mp3")
+        mixer.music.play()
 
-    elif value == "SPACE":
-        entry.insert(END, ' ')
+    if value == "<-":
+        entry.delete(len(entry.get()) - 1, END)
     elif value == " Tab ":
         entry.insert(END, '    ')
     else:
         entry.insert(END, value)
 
+def HosoPop(kb,entry):
+    def OptionsKeyboard_open():
+        kb.destroy()
+        OptionsKeyboard()
+    def Copy_Text():
+        pyperclip.copy(entry.get())     #Copy to clipboard
+    def Clear():
+        entry.delete('0', 'end')
 
-def HosoPop(kb):
+    def Read_Text():
+        mixer.init()
+        mixer.music.load("good.mp3")
+        text_to_read = entry.get()
+        if(len(text_to_read) > 0):
+            language = 'en'
+            myobj = gTTS(text=text_to_read, lang=language, slow=False)
+            myobj.save('good1.mp3')
+            mixer.music.load("good1.mp3")
+            mixer.music.play()
+        else:
+            messagebox.showwarning('Error', 'Text empty\nPlease type someting and try again')
+
+    def Speak_Text():
+
+        r1 = sr.Recognizer()
+        r2 = sr.Recognizer()
+        with sr.Microphone() as source:
+            audio = r1.listen(source)
+        the_out = r2.recognize_google(audio)
+        #print(the_out)
 
     varRow = 2
     varColumn = 0
-
-    def OptionsKeyboard():
-        kb = tk.Toplevel()
-        kb.title("KeyBoard - Options")
-        width = 600
-        height = 600
-        screen_width = kb.winfo_screenwidth()
-        screen_height = kb.winfo_screenheight()
-        x = (screen_width / 2) - (width / 2)
-        y = (screen_height / 2) - (height / 2)
-        kb.geometry("%dx%d+%d+%d" % (width, height, x, y))
-        kb.resizable(0, 0)
+    font_color = c_options['fontcolor']
+    back_color = c_options['backcolor']
+    font_size = int(c_options['fontsize'])
+    row_space = 5
+    space_span = 11
+    font_size_space = font_size
+    font_size_options = font_size
+    if(font_size>=20):
+        global buttons
+        row_space = 8
+        buttons = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
+                    'z', 'x', 'c', 'v', 'b', 'n', 'm', '<-', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                   '-', '[', ']', '+', ',', '.', '?', 'SHIFT', '/', 'Space', 'Clear', 'Copy Text', 'Options', 'Read Text', 'Speak']
+        if font_size >=24:
+            space_span = 8
+            font_size_space = 20
+            font_size_options = 20
+            if font_size == 28:
+                space_span = 10
+            if font_size == 32:
+                space_span = 8
 
     for button in buttons:
 
         command = lambda x=button: select(x)
 
-        if button == "Space" :
-            Button(kb, text=button, width=70, bg="#3c4987", fg="#ffffff",
+        if button == "Space":
+            Button(kb, text=button, width=70, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=10,
-                   pady=1, bd=2, command=lambda x=button: select(" ")).grid(row=5, column=0,columnspan = 11)
-
-        elif(button == "Options"):
+                   pady=1, bd=2, font=('ariel', font_size_space), command=lambda x=button: select(" ")).grid(row=row_space, column=0, columnspan=space_span)
+        elif button == "Copy Text":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Copy_Text).grid(row=2, column=16)
+        elif button == "Clear":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Clear).grid(row=3, column=16)
+        elif button == "Options":
             Button(kb, text=button, width=10 , bg="#6D6D6D", fg="#0007AB",
                     activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
-                    pady=1, bd=2, command=OptionsKeyboard).grid(row=2, column=16)
+                    pady=1, bd=2, font=('ariel', font_size_options), command=(lambda: OptionsKeyboard_open() if option_opeded==False else messagebox.showerror('Error', 'ERROR- Options opened!'))).grid(row=4, column=16)
+        elif button == "Read Text":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Read_Text).grid(row=5, column=16)
+        elif button == "Speak":
+            Button(kb, text=button, width=10, bg="#6D6D6D", fg="#0007AB",
+                   activebackground="#000000", activeforeground="#3c4987", relief='raised', padx=10,
+                   pady=1, bd=2, font=('ariel', font_size_options), command=Speak_Text).grid(row=1, column=16)
         else:
-            Button(kb, text=button, width=5, bg="#3c4987", fg="#ffffff",
+            Button(kb, text=button, width=5, bg=back_color, fg=font_color,
                    activebackground="#ffffff", activeforeground="#3c4987", relief='raised', padx=4,
-                   pady=4, bd=2, command=command).grid(row=varRow, column=varColumn)
+                   pady=4, bd=2, command=command, font=('ariel', font_size)).grid(row=varRow, column=varColumn)
 
         varColumn += 1
 
-        if varColumn > 14 and varRow == 2:
-            varColumn = 0
-            varRow += 1
-        if varColumn > 14 and varRow == 3:
-            varColumn = 0
-            varRow += 1
-
-
+        if font_size == 20:
+            if varColumn > 11:
+                varColumn = 0
+                varRow += 1
+        elif font_size == 24:
+            if varColumn > 7:
+                varColumn = 0
+                varRow += 1
+        elif font_size == 28:
+            if varColumn > 9:
+                varColumn = 0
+                varRow += 1
+        elif font_size == 32:
+            if varColumn > 8:
+                varColumn = 0
+                varRow += 1
+        else:
+            if varColumn > 14 and varRow == 2:
+                varColumn = 0
+                varRow += 1
+            if varColumn > 14 and varRow == 3:
+                varColumn = 0
+                varRow += 1
 
 def keyboard():
-    kb = Toplevel()
-    kb.title("AccessWord")
-    kb.resizable(0, 0)
+    global k_width
+    global k_height
+    global kb1
+    #say hello to user
+    if (logusertype!='admin'):
+        if option_opeded==False:
+            global indicator_log
+            if indicator_log==False:
+                indicator_log= True
+                mixer.init()
+                mixer.music.load("good.mp3")
+                language = 'en'
+                myobj = gTTS(text="Hello " + loguser + "!", lang=language, slow=False)
+                myobj.save('good1.mp3')
+                mixer.music.load("good1.mp3")
+                mixer.music.play()
+
+    kb1 = Toplevel()
+    kb1.title("AccessWord: Keyboard")
+    kb1.resizable(0, 0)
+    xx = ""
+    xx = str(c_options['size']).split("x")
+    width = int(xx[0])
+    height = int(xx[1])
+    screen_width = kb1.winfo_screenwidth()
+    screen_height = kb1.winfo_screenheight()
+    x = (screen_width / 2) - (width / 2)
+    y = (screen_height / 2) - (height / 2)
+    font_size = c_options['fontsize']
+    auto_size = c_options['autosize']
+    if (auto_size == 1):
+        if int(font_size) < 14:
+            width = 1100
+            height= 240
+        elif int(font_size) == 14:
+            width = 1220
+            height= 270
+        elif(int(font_size) == 16):
+            width = 1320
+            height = 290
+        elif (int(font_size) == 18):
+            width = 1450
+            height = 330
+        elif (int(font_size) == 20):
+            width = 1440
+            height = 420
+        elif (int(font_size) == 24):
+            width = 1360
+            height = 600
+        elif (int(font_size) == 28):
+            width = 1460
+            height = 600
+        elif (int(font_size) == 32):
+            width = 1500
+            height = 680
+    k_width = width
+    k_height = height
+    kb1.geometry("%dx%d+%d+%d" % (width, height, x, y))
    # kb.configure(bg='black')
     global entry
-    entry = Entry(kb, width=128)
+    entry = Entry(kb1, width=128)
     entry.grid(rowspan=1, columnspan=15, ipadx=100, ipady=20)
+    lbl_name = Label(kb1, text="Hello " + loguser, font=('arial', font_size), bd=15)
+    lbl_name.grid(row=0, column=16, sticky="e")
     # entry.pack()
-    HosoPop(kb)
+    HosoPop(kb1, entry)
+    if option_opeded==False:
+        def on_closing():
+            if logusertype !='admin':
+                mixer.music.load("hello to user/logout question.mp3")
+                mixer.music.play()
+                if messagebox.askokcancel("Quit", loguser+", Do you want to quit (LogOut)?"):
+                    kb1.destroy()
+                    root.deiconify()
+                    global indicator_log
+                    indicator_log =False
+            else:
+                kb1.destroy()
+        kb1.protocol("WM_DELETE_WINDOW", on_closing)
 
 
 buttons = ['q','w','e','r','t','y','u','i','o','p','<-','7','8','9','-',
            'a','s','d','f','g','h','j','k','l','[',']','4','5','6','+',
            'z','x','c','v','b','n','m',',','.','?','SHIFT','1','2','3','/',
-           'Space' , 'Options']
+           'Space', 'Clear', 'Copy Text', 'Options', 'Read Text', 'Speak']
 
 # Main Window #
-
+global root
 root = Tk()
 root.title("AccessWord")
-l = Label(root, text="!שלום")
-l.place(relx=0.45, rely=0.1)
-l = Label(root, text=":אנא בחר את סוג המקלדת הרצויה")
-l.place(relx=0.3, rely=0.25)
-button1 = Button(root, text="Admin", command=admin_login)
-button1.pack()
-button1.place(relx=0.5, rely=0.6, anchor=CENTER)
-button2 = Button(root, text="Hearing impaired", command=user_login_deaf)
-button2.pack()
-button2.place(relx=0.7, rely=0.6, anchor=CENTER)
-button3 = Button(root, text="visually impaired", command=user_login_blind)
-button3.pack()
-button3.place(relx=0.3, rely=0.6, anchor=CENTER)
+global date
+global today
+today = date.today()    #GET DATE
+now = datetime.now()    #GET TIME
+current_time = int(now.strftime("%H"))
+mixer.init()
+if(current_time >= 12 and current_time <= 17):
+    mixer.music.load("hello to user/afternoon.mp3")
+    mixer.music.play()
+elif(current_time >= 18 and current_time <= 21):
+    mixer.music.load("hello to user/evening.mp3")
+    mixer.music.play()
+elif(current_time >= 22 and current_time <= 23 or current_time>=0 and current_time <=5):
+    mixer.music.load("hello to user/night.mp3")
+    mixer.music.play()
+elif(current_time >= 6 and current_time <= 11):
+    mixer.music.load("hello to user/morning.mp3")
+    mixer.music.play()
 
-root.geometry("500x300+120+120")
+
+button1 = Button(root, text="Admin", font=('ariel',20), command=admin_login)
+button1.pack()
+button1.place(relx=0.5, rely=0.4, anchor=CENTER)
+button2 = Button(root, text="Hearing impaired", command=user_login_deaf, font=('ariel',20))
+button2.pack()
+button2.place(relx=0.5, rely=0.8, anchor=CENTER)
+button3 = Button(root, text="visually impaired", command=user_login_blind, font=('ariel',20))
+button3.pack()
+button3.place(relx=0.5, rely=0.6, anchor=CENTER)
+
+img = ImageTk.PhotoImage(Image.open("abc.png"))
+panel = Label(root, image=img)
+panel.pack(side = "bottom", fill = "both", expand = "yes")
+panel.place(relx=0.5, rely=0.2, anchor=CENTER)
+
+
+def on_closing():
+    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+        root.destroy()
+root.protocol("WM_DELETE_WINDOW", on_closing)
+
+root.geometry("470x500+120+120")
 root.mainloop()
