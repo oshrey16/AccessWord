@@ -159,6 +159,8 @@
       <workItem from="1579349442339" duration="1242000" />
       <workItem from="1579358941937" duration="11357000" />
       <workItem from="1579370365418" duration="2700000" />
+      <workItem from="1579374245918" duration="10000" />
+      <workItem from="1579384716518" duration="2088000" />
     </task>
     <servers />
   </component>
@@ -193,6 +195,6 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/keyboard_project$keyboard.coverage" NAME="keyboard Coverage Results" MODIFIED="1578932244014" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/keyboard_project$accessWord.coverage" NAME="accessWord Coverage Results" MODIFIED="1579373021855" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/keyboard_project$accessWord.coverage" NAME="accessWord Coverage Results" MODIFIED="1579386763299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

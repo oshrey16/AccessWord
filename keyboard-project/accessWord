@@ -684,13 +684,13 @@ def Admin_Frame():
         listbox.place(relx=0.5, rely=0.5, anchor=CENTER)
         scrollbar.config(command=listbox.yview)
         scrollbar.pack(side="right", fill="y")
-        listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(('UserName'), ('Report'), ('Date Of Report')))
+        listbox.insert('end', '{:20s}|{:15s}|{:10}|{:60s}'.format(('UserName'), ('Date Of Report'), ('User Phone'), ('Report')))
         conn = sqlite3.connect("AdminPassword.db")
         cur = conn.cursor()
         cur.execute("SELECT * FROM `Reports`")
         record = cur.fetchall()
         for row in record:
-            listbox.insert('end', '{:20s}|{:60s}|{:15s}'.format(row[1], row[2], row[3]))
+            listbox.insert('end', '{:20s}|{:15s}|{:10}|{:60s}'.format(row[1], row[2], row[4], row[3]))
         conn.close()
 
     def Show_contact():
@@ -890,7 +890,25 @@ def OptionsKeyboard():
             conn = sqlite3.connect("AdminPassword.db")
             cursor = conn.cursor()
             if(len(entryy.get()) > 3):
-                cursor.execute("INSERT INTO `Reports` (username, date, text_report) VALUES (?,?,?)",(USERNAME.get(), DATE.get(), entryy.get()))
+                if (logusertype=='visually impaired'):
+                    cursor.execute("SELECT * FROM `User_Blind`")
+                    record = cursor.fetchall()
+                    for row in record:
+                        if USERNAME.get() == row[1]:
+                            phone = row[5]
+                elif (logusertype=='Hearing impaired'):
+                    cursor.execute("SELECT * FROM `User_Deaf`")
+                    record = cursor.fetchall()
+                    for row in record:
+                        if USERNAME.get() == row[1]:
+                            phone = row[5]
+                else:
+                    cursor.execute("SELECT * FROM `Admin`")
+                    record = cursor.fetchall()
+                    for row in record:
+                        if USERNAME.get() == row[1]:
+                            phone = row[5]
+                cursor.execute("INSERT INTO `Reports` (username, date, text_report, phone) VALUES (?,?,?,?)",(USERNAME.get(), DATE.get(), entryy.get(), phone))
                 conn.commit()
                 conn.close()
                 Send_ok()
